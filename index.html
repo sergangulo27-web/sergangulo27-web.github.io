@@ -639,11 +639,11 @@ footer .footer-name { color: rgba(255,255,255,0.8); font-family: 'Playfair Displ
 </footer>
 
 <script>
-  const WORKER_URL = 'https://sergio-donations.sergio28.workers.dev';
+  const WORKER_URL = 'https://sergio-donations-backend.sergio28.workers.dev/';
   const STATS_URL  = 'https://script.google.com/a/macros/christinthecity.org/s/AKfycbzodvgHDDIs6Yf1-Rg7XwxZqHlHD1FVVOfmkM9DZqBTMjlLeo5cDl3iq-CLuxJcJb3D5Q/exec';
 
   // ── STRIPE SETUP ──
-  const stripe = Stripe('pk_test_51Tf4M7Qo40d7O1MqklzKlvx93b605T2BAj1Mrax5c0OJEV0GSFRRdKVGwRo54oN4GiTIZ6gTHt3ZN8hJMnHt0Ow200zEXJ2iRB');
+  const stripe = Stripe('pk_live_51Tf4M7Qo40d7O1Mq1B4bsu8uxvvjbzGcrjc2r042BBV6oMlTZ3t9DWsPwRn4ixFjlhAUZMQyvCW5aD4TT5QoLK0N00TnAMpWZU');
   const elements = stripe.elements();
   const cardElement = elements.create('card', {
     style: {
