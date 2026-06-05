@@ -694,26 +694,30 @@ footer .footer-name { color: rgba(255,255,255,0.8); font-family: 'Playfair Displ
     return selectedAmount;
   }
 
-  const SHEET_URL = 'https://script.google.com/a/macros/christinthecity.org/s/AKfycbx6z8nyndTmDlZ9OpZZkpEDIyKInbaoNRjak1WrEBNnSHKAK_azIGMaN7HFR_G8wlFXWg/exec';
-  const STATS_URL = 'https://script.google.com/a/macros/christinthecity.org/s/AKfycbx6z8nyndTmDlZ9OpZZkpEDIyKInbaoNRjak1WrEBNnSHKAK_azIGMaN7HFR_G8wlFXWg/exec';
+  const SHEET_URL = 'https://script.google.com/a/macros/christinthecity.org/s/AKfycbzodvgHDDIs6Yf1-Rg7XwxZqHlHD1FVVOfmkM9DZqBTMjlLeo5cDl3iq-CLuxJcJb3D5Q/exec';
+  const STATS_URL = 'https://script.google.com/a/macros/christinthecity.org/s/AKfycbzodvgHDDIs6Yf1-Rg7XwxZqHlHD1FVVOfmkM9DZqBTMjlLeo5cDl3iq-CLuxJcJb3D5Q/exec';
 
   function loadProgress() {
-    fetch(STATS_URL)
-      .then(res => res.json())
-      .then(d => {
-        document.querySelector('.progress-raised').innerHTML =
-          '$' + d.raised.toLocaleString() + ' <span>raised this year</span>';
-        document.querySelector('.progress-goal').innerHTML =
-          'Goal: <strong>$' + d.goal.toLocaleString() + '</strong>';
-        document.getElementById('progressFill').style.width = d.percent + '%';
-        document.getElementById('supporterText').innerHTML =
-          d.supporters + ' supporter' + (d.supporters !== 1 ? 's' : '') +
-          ' · ' + d.percent + '% funded · <strong style="color:rgba(255,255,255,0.65)">$' +
-          d.remaining.toLocaleString() + ' to go</strong>';
-      })
-      .catch(() => {
-        // silently keep the default values if the fetch fails
-      });
+    const callbackName = 'statsCallback_' + Date.now();
+    const script = document.createElement('script');
+
+    window[callbackName] = function(d) {
+      document.querySelector('.progress-raised').innerHTML =
+        '$' + d.raised.toLocaleString() + ' <span>raised this year</span>';
+      document.querySelector('.progress-goal').innerHTML =
+        'Goal: <strong>$' + d.goal.toLocaleString() + '</strong>';
+      document.getElementById('progressFill').style.width = d.percent + '%';
+      document.getElementById('supporterText').innerHTML =
+        d.supporters + ' supporter' + (d.supporters !== 1 ? 's' : '') +
+        ' · ' + d.percent + '% funded · <strong style="color:rgba(255,255,255,0.65)">$' +
+        d.remaining.toLocaleString() + ' to go</strong>';
+      delete window[callbackName];
+      document.body.removeChild(script);
+    };
+
+    script.src = STATS_URL + '?callback=' + callbackName;
+    script.onerror = () => { delete window[callbackName]; document.body.removeChild(script); };
+    document.body.appendChild(script);
   }
 
   function updateCountdown() {
