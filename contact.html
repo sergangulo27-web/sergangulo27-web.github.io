@@ -53,6 +53,61 @@ nav { display: flex; gap: 1.5rem; }
 nav a { color: rgba(255,255,255,0.7); text-decoration: none; font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 700; transition: color 0.2s; }
 nav a:hover, nav a.active { color: var(--gold-light); }
 
+/* ── HAMBURGER MENU ── */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 36px; height: 36px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  z-index: 200;
+}
+.hamburger span {
+  display: block;
+  width: 100%;
+  height: 2px;
+  background: rgba(255,255,255,0.85);
+  border-radius: 2px;
+  transition: transform 0.28s ease, opacity 0.2s ease;
+  transform-origin: center;
+}
+.hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+.hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+.mobile-nav {
+  display: none;
+  position: fixed;
+  top: 68px; left: 0; right: 0;
+  background: var(--navy-mid);
+  border-bottom: 3px solid var(--gold);
+  z-index: 99;
+  flex-direction: column;
+  padding: 0.5rem 0 0.75rem;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+}
+.mobile-nav.open { display: flex; }
+.mobile-nav a {
+  color: rgba(255,255,255,0.75);
+  text-decoration: none;
+  font-size: 0.82rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 700;
+  padding: 0.85rem 2rem;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+  transition: color 0.2s, background 0.2s;
+}
+.mobile-nav a:last-child { border-bottom: none; }
+.mobile-nav a:hover, .mobile-nav a.active {
+  color: var(--gold-light);
+  background: rgba(200,151,58,0.08);
+}
+
 /* ── HERO ── */
 .missionary-hero {
   background: var(--navy);
@@ -222,7 +277,7 @@ input[type=text], input[type=email], input[type=tel], select, textarea {
 }
 input:focus, select:focus, textarea:focus { outline: none; border-color: var(--gold); box-shadow: 0 0 0 3px rgba(200,151,58,0.15); }
 select {
-  background-image: <url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%237a7a7a' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%237a7a7a' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
   background-repeat: no-repeat; background-position: right 10px center; padding-right: 2rem;
 }
 
@@ -295,7 +350,8 @@ hr { border: none; border-top: 1px solid var(--border); margin: 1.25rem 0; }
   .two-col { grid-template-columns: 1fr; }
   .form-grid { grid-template-columns: 1fr; }
   .form-group.full { grid-column: 1; }
-  nav { display: none; }
+  nav { display: none !important; }
+  .hamburger { display: flex; }
   .card { padding: 1.5rem 1.25rem; }
   .org-box { flex-direction: column; text-align: center; }
 }
@@ -307,7 +363,7 @@ hr { border: none; border-top: 1px solid var(--border); margin: 1.25rem 0; }
 <header>
   <a class="logo" href="#">
     <div class="logo-icon" style="overflow:hidden; padding:0;">
-      <img src= "images/Sergio_Angulo_copy.jpeg" alt="Sergio Angulo" style="width:100%; height:100%; object-fit:cover; object-position:center 15%;">
+      <img src="images/Sergio_Angulo_copy.jpeg" alt="Sergio Angulo" style="width:100%; height:100%; object-fit:cover; object-position:center 15%;">
     </div>
     <div class="logo-text">Sergio Angulo <span>Christ in the City</span></div>
   </a>
@@ -316,7 +372,17 @@ hr { border: none; border-top: 1px solid var(--border); margin: 1.25rem 0; }
     <a href="story.html">My Story</a>
     <a href="contact.html" class="active">Contact</a>
   </nav>
+  <button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </button>
 </header>
+
+<!-- MOBILE NAV -->
+<div class="mobile-nav" id="mobileNav">
+  <a href="index.html">Give</a>
+  <a href="story.html">My Story</a>
+  <a href="contact.html" class="active">Contact</a>
+</div>
 
 <!-- HERO -->
 <div class="missionary-hero">
@@ -325,7 +391,6 @@ hr { border: none; border-top: 1px solid var(--border); margin: 1.25rem 0; }
       <div class="hero-eyebrow">Get in Touch</div>
       <h1>Reach Out to<br><em>Sergio</em></h1>
       <p>Whether you want to pray together, learn more about the mission, or simply say hello — I'd love to hear from you. Don't hesitate to reach out.</p>
-
     </div>
   </div>
 </div>
@@ -357,7 +422,6 @@ hr { border: none; border-top: 1px solid var(--border); margin: 1.25rem 0; }
     <div class="social-row">
 
       <a class="social-chip" href="https://www.instagram.com/sergangulo/" target="_blank" rel="noopener">
-        <!-- Instagram icon -->
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
           <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
           <circle cx="12" cy="12" r="4"/>
@@ -367,7 +431,6 @@ hr { border: none; border-top: 1px solid var(--border); margin: 1.25rem 0; }
       </a>
 
       <a class="social-chip" href="https://www.facebook.com/sergioangulo27" target="_blank" rel="noopener">
-        <!-- Facebook icon -->
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
           <path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/>
         </svg>
@@ -375,7 +438,6 @@ hr { border: none; border-top: 1px solid var(--border); margin: 1.25rem 0; }
       </a>
 
       <a class="social-chip" href="https://www.youtube.com/@ChristInTheCity" target="_blank" rel="noopener">
-        <!-- YouTube icon -->
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
           <path d="M22.54 6.42a2.78 2.78 0 00-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46A2.78 2.78 0 001.46 6.42 29 29 0 001 12a29 29 0 00.46 5.58 2.78 2.78 0 001.95 1.96C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 001.95-1.96A29 29 0 0023 12a29 29 0 00-.46-5.58z"/>
           <polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" fill="currentColor" stroke="none"/>
@@ -483,6 +545,35 @@ hr { border: none; border-top: 1px solid var(--border); margin: 1.25rem 0; }
 </footer>
 
 <script>
+  // ── HAMBURGER MENU ──
+  function toggleMenu() {
+    const btn = document.getElementById('hamburger');
+    const nav = document.getElementById('mobileNav');
+    const isOpen = nav.classList.toggle('open');
+    btn.classList.toggle('open', isOpen);
+    btn.setAttribute('aria-expanded', isOpen);
+  }
+
+  // Close menu when a link is tapped
+  document.querySelectorAll('.mobile-nav a').forEach(link => {
+    link.addEventListener('click', () => {
+      document.getElementById('mobileNav').classList.remove('open');
+      document.getElementById('hamburger').classList.remove('open');
+    });
+  });
+
+  // Close menu on outside tap
+  document.addEventListener('click', e => {
+    const nav = document.getElementById('mobileNav');
+    const btn = document.getElementById('hamburger');
+    if (nav.classList.contains('open') && !nav.contains(e.target) && !btn.contains(e.target)) {
+      nav.classList.remove('open');
+      btn.classList.remove('open');
+      btn.setAttribute('aria-expanded', false);
+    }
+  });
+
+  // ── CONTACT FORM ──
   const WORKER_URL = 'https://sergio-donations-backend.sergio28.workers.dev/';
 
   async function sendMessage() {
