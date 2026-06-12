@@ -53,6 +53,61 @@ nav { display: flex; gap: 1.5rem; }
 nav a { color: rgba(255,255,255,0.7); text-decoration: none; font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 700; transition: color 0.2s; }
 nav a:hover, nav a.active { color: var(--gold-light); }
 
+/* ── HAMBURGER MENU ── */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 36px; height: 36px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  z-index: 200;
+}
+.hamburger span {
+  display: block;
+  width: 100%;
+  height: 2px;
+  background: rgba(255,255,255,0.85);
+  border-radius: 2px;
+  transition: transform 0.28s ease, opacity 0.2s ease;
+  transform-origin: center;
+}
+.hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+.hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+.mobile-nav {
+  display: none;
+  position: fixed;
+  top: 68px; left: 0; right: 0;
+  background: var(--navy-mid);
+  border-bottom: 3px solid var(--gold);
+  z-index: 99;
+  flex-direction: column;
+  padding: 0.5rem 0 0.75rem;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+}
+.mobile-nav.open { display: flex; }
+.mobile-nav a {
+  color: rgba(255,255,255,0.75);
+  text-decoration: none;
+  font-size: 0.82rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 700;
+  padding: 0.85rem 2rem;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+  transition: color 0.2s, background 0.2s;
+}
+.mobile-nav a:last-child { border-bottom: none; }
+.mobile-nav a:hover, .mobile-nav a.active {
+  color: var(--gold-light);
+  background: rgba(200,151,58,0.08);
+}
+
 /* ── HERO ── */
 .story-hero {
   background: var(--navy);
@@ -102,23 +157,15 @@ nav a:hover, nav a.active { color: var(--gold-light); }
 }
 
 /* ── PHOTO + TEXT LAYOUT ── */
-.story-intro {
-  overflow: hidden;
-}
+.story-intro { overflow: hidden; }
 .story-photo {
   float: left;
-  width: 200px;
-  height: 240px;
-  border-radius: 10px;
-  overflow: hidden;
+  width: 200px; height: 240px;
+  border-radius: 10px; overflow: hidden;
   border: 2px solid var(--border);
   margin: 0 1.75rem 1rem 0;
 }
-.story-photo img {
-  width: 100%; height: 100%;
-  object-fit: cover;
-  object-position: center 15%;
-}
+.story-photo img { width: 100%; height: 100%; object-fit: cover; object-position: center 15%; }
 
 /* ── ABOUT BODY ── */
 .about-body { font-size: 0.95rem; color: var(--text-mid); line-height: 1.85; }
@@ -158,9 +205,7 @@ hr { border: none; border-top: 1px solid var(--border); margin: 1.5rem 0; }
   color: #fff; font-size: 1.15rem; font-weight: 600;
   margin-bottom: 4px;
 }
-.cta-box-text p {
-  font-size: 0.85rem; color: rgba(255,255,255,0.6); line-height: 1.5;
-}
+.cta-box-text p { font-size: 0.85rem; color: rgba(255,255,255,0.6); line-height: 1.5; }
 .btn-gold {
   background: var(--gold); color: var(--navy);
   border: none; padding: 0.7rem 1.5rem;
@@ -175,7 +220,8 @@ hr { border: none; border-top: 1px solid var(--border); margin: 1.5rem 0; }
 /* ── RESPONSIVE ── */
 @media (max-width: 620px) {
   .story-photo { float: none; width: 100%; height: 220px; margin: 0 0 1.25rem 0; }
-  nav { display: none; }
+  nav { display: none !important; }
+  .hamburger { display: flex; }
   .card { padding: 1.5rem 1.25rem; }
   .cta-box { flex-direction: column; text-align: center; }
 }
@@ -196,7 +242,17 @@ hr { border: none; border-top: 1px solid var(--border); margin: 1.5rem 0; }
     <a href="story.html" class="active">My Story</a>
     <a href="contact.html">Contact</a>
   </nav>
+  <button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </button>
 </header>
+
+<!-- MOBILE NAV -->
+<div class="mobile-nav" id="mobileNav">
+  <a href="index.html">Give</a>
+  <a href="story.html" class="active">My Story</a>
+  <a href="contact.html">Contact</a>
+</div>
 
 <!-- HERO -->
 <div class="story-hero">
@@ -217,9 +273,9 @@ hr { border: none; border-top: 1px solid var(--border); margin: 1.5rem 0; }
       </div>
       <p class="card-title" style="font-family:'Playfair Display',serif; font-size:1.2rem; font-weight:600; color:var(--navy); margin-bottom:1rem;">Background</p>
       <div class="about-body">
-        <p>I was born in San Diego, raised in Mexico, went to school in California (very confusing I know). After high school, I flew across the country and went to college in Boston. It was here where my life was radically transformed and I began taking my faith much more seriously. I was blessed to be surrounded by a great community of Catholic men and women through Saint Paul’s Outreach (SPO) and continued to develop my faith. Took on several leadership roles there as well, from leading men’s sessions, small groups, large co-ed environments, and giving talks to over 80 students at retreats. Probably the most formative experience was in their household program where groups of men and women live (separately) with an intentional way of life alongside the missionaries. I lived with my best friends whom I now call my brothers and it was by far the best part of my college experience. Graduated Spring of 2025 with a B.S in Mechanical Engineering and Design at Northeastern University. Since then I decided to pursue an MBA from Northeastern and started working full time at a consumer product company. </p>
+        <p>I was born in San Diego, raised in Mexico, went to school in California (very confusing I know). After high school, I flew across the country and went to college in Boston. It was here where my life was radically transformed and I began taking my faith much more seriously. I was blessed to be surrounded by a great community of Catholic men and women through Saint Paul's Outreach (SPO) and continued to develop my faith. Took on several leadership roles there as well, from leading men's sessions, small groups, large co-ed environments, and giving talks to over 80 students at retreats. Probably the most formative experience was in their household program where groups of men and women live (separately) with an intentional way of life alongside the missionaries. I lived with my best friends whom I now call my brothers and it was by far the best part of my college experience. Graduated Spring of 2025 with a B.S in Mechanical Engineering and Design at Northeastern University. Since then I decided to pursue an MBA from Northeastern and started working full time at a consumer product company. </p>
 
-        <p>I am the youngest of two siblings. I’m always trying to do something fun or interesting, whether it’s running, hiking, exploring, reading, watching movies, sharing a laugh or two with the boys, going out somewhere nice or somewhere maybe we shouldn’t be. (You’re not in trouble unless you get caught :) <em>I might delete that part… </em> </p>
+        <p>I am the youngest of two siblings. I'm always trying to do something fun or interesting, whether it's running, hiking, exploring, reading, watching movies, sharing a laugh or two with the boys, going out somewhere nice or somewhere maybe we shouldn't be. (You're not in trouble unless you get caught :) <em>I might delete that part… </em> </p>
       </div>
     </div>
   </div>
@@ -282,5 +338,31 @@ hr { border: none; border-top: 1px solid var(--border); margin: 1.5rem 0; }
   <p><a href="index.html" style="color:var(--gold-light); text-decoration:none;">Support Sergio</a> · <a href="mailto:sergio28@christinthecity.org" style="color:var(--gold-light); text-decoration:none;">sergio28@christinthecity.org</a></p>
 </footer>
 
+<script>
+  function toggleMenu() {
+    const btn = document.getElementById('hamburger');
+    const nav = document.getElementById('mobileNav');
+    const isOpen = nav.classList.toggle('open');
+    btn.classList.toggle('open', isOpen);
+    btn.setAttribute('aria-expanded', isOpen);
+  }
+
+  document.querySelectorAll('.mobile-nav a').forEach(link => {
+    link.addEventListener('click', () => {
+      document.getElementById('mobileNav').classList.remove('open');
+      document.getElementById('hamburger').classList.remove('open');
+    });
+  });
+
+  document.addEventListener('click', e => {
+    const nav = document.getElementById('mobileNav');
+    const btn = document.getElementById('hamburger');
+    if (nav.classList.contains('open') && !nav.contains(e.target) && !btn.contains(e.target)) {
+      nav.classList.remove('open');
+      btn.classList.remove('open');
+      btn.setAttribute('aria-expanded', false);
+    }
+  });
+</script>
 </body>
 </html>
