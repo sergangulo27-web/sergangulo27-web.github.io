@@ -54,6 +54,61 @@ nav { display: flex; gap: 1.5rem; }
 nav a { color: rgba(255,255,255,0.7); text-decoration: none; font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 700; transition: color 0.2s; }
 nav a:hover, nav a.active { color: var(--gold-light); }
 
+/* ── HAMBURGER MENU ── */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 36px; height: 36px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  z-index: 200;
+}
+.hamburger span {
+  display: block;
+  width: 100%;
+  height: 2px;
+  background: rgba(255,255,255,0.85);
+  border-radius: 2px;
+  transition: transform 0.28s ease, opacity 0.2s ease;
+  transform-origin: center;
+}
+.hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+.hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+.mobile-nav {
+  display: none;
+  position: fixed;
+  top: 68px; left: 0; right: 0;
+  background: var(--navy-mid);
+  border-bottom: 3px solid var(--gold);
+  z-index: 99;
+  flex-direction: column;
+  padding: 0.5rem 0 0.75rem;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+}
+.mobile-nav.open { display: flex; }
+.mobile-nav a {
+  color: rgba(255,255,255,0.75);
+  text-decoration: none;
+  font-size: 0.82rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 700;
+  padding: 0.85rem 2rem;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+  transition: color 0.2s, background 0.2s;
+}
+.mobile-nav a:last-child { border-bottom: none; }
+.mobile-nav a:hover, .mobile-nav a.active {
+  color: var(--gold-light);
+  background: rgba(200,151,58,0.08);
+}
+
 /* ── MISSIONARY HERO ── */
 .missionary-hero {
   background: var(--navy);
@@ -138,7 +193,7 @@ nav a:hover, nav a.active { color: var(--gold-light); }
   line-height: 1.75; font-weight: 300; max-width: 500px;
 }
 
-/* ── FUNDING PROGRESS BAR (inside hero) ── */
+/* ── FUNDING PROGRESS BAR ── */
 .progress-strip {
   background: rgba(0,0,0,0.25);
   border-top: 1px solid rgba(200,151,58,0.2);
@@ -153,9 +208,7 @@ nav a:hover, nav a.active { color: var(--gold-light); }
 .progress-raised span { font-size: 0.78rem; color: rgba(255,255,255,0.45); font-family: 'Lato', sans-serif; font-weight: 300; margin-left: 4px; }
 .progress-goal { font-size: 0.78rem; color: rgba(255,255,255,0.5); }
 .progress-goal strong { color: rgba(255,255,255,0.8); }
-.progress-bar-track {
-  height: 7px; background: rgba(255,255,255,0.12); border-radius: 10px; overflow: hidden;
-}
+.progress-bar-track { height: 7px; background: rgba(255,255,255,0.12); border-radius: 10px; overflow: hidden; }
 .progress-bar-fill {
   height: 100%; width: 62%;
   background: linear-gradient(90deg, var(--gold) 0%, var(--gold-light) 100%);
@@ -372,39 +425,12 @@ footer .footer-name { color: rgba(255,255,255,0.8); font-family: 'Playfair Displ
   .impact-grid { grid-template-columns: repeat(2, 1fr); }
   .form-grid { grid-template-columns: 1fr; }
   .form-group.full { grid-column: 1; }
-  nav { display: none; }
+  nav { display: none !important; }
+  .hamburger { display: flex; }
   .card { padding: 1.5rem 1.25rem; }
   .amount-grid { grid-template-columns: repeat(2, 1fr); }
   .progress-strip { padding: 1rem 1.25rem; }
 }
-
-/* ── HEADER ── */
-header {
-  background: var(--navy);
-  padding: 0 2rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  height: 68px;
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  border-bottom: 3px solid var(--gold);
-}
-.logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
-.logo-icon {
-  width: 40px; height: 40px; border-radius: 50%;
-  border: 2px solid var(--gold);
-  display: flex; align-items: center; justify-content: center;
-  background: rgba(200,151,58,0.15);
-}
-.logo-text { color: #fff; font-family: 'Playfair Display', serif; font-size: 1rem; line-height: 1.2; font-weight: 400; }
-.logo-text span { display: block; font-size: 0.65rem; color: var(--gold-light); font-family: 'Lato', sans-serif; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 300; }
-nav { display: flex; gap: 1.5rem; }
-nav a { color: rgba(255,255,255,0.7); text-decoration: none; font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 700; transition: color 0.2s; }
-nav a:hover, nav a.active { color: var(--gold-light); }
-@media (max-width: 620px) { nav { display: none; } }
-
 </style>
 </head>
 <body>
@@ -422,7 +448,17 @@ nav a:hover, nav a.active { color: var(--gold-light); }
     <a href="story.html">My Story</a>
     <a href="contact.html">Contact</a>
   </nav>
+  <button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </button>
 </header>
+
+<!-- MOBILE NAV -->
+<div class="mobile-nav" id="mobileNav">
+  <a href="index.html" class="active">Give</a>
+  <a href="story.html">My Story</a>
+  <a href="contact.html">Contact</a>
+</div>
 
 <!-- MISSIONARY HERO -->
 <div class="missionary-hero">
@@ -430,7 +466,8 @@ nav a:hover, nav a.active { color: var(--gold-light); }
     <div class="profile-photo-wrap">
       <div class="profile-badge">Incoming Missionary</div>
       <div class="profile-photo" style="background:none; overflow:hidden; padding:0;">
-        <img src="images/Sergio_Angulo_copy.jpeg" alt="Sergio Angulo" style="width:100%; height:100%; object-fit:cover; object-position: center 15%;"></div>
+        <img src="images/Sergio_Angulo_copy.jpeg" alt="Sergio Angulo" style="width:100%; height:100%; object-fit:cover; object-position: center 15%;">
+      </div>
     </div>
     <div class="hero-text">
       <div class="hero-eyebrow">Support a Missionary</div>
@@ -489,9 +526,9 @@ nav a:hover, nav a.active { color: var(--gold-light); }
   <!-- GIFT AMOUNT -->
   <div class="card">
     <p class="card-title">Choose Your Gift</p>
-    <p class="card-subtitle">Your support will make it possible for me to serve in Denver and build relationships with those who are too often forgotten and invisible to the rest of the world..</p>
-    <P class="card-subtitle"> <strong>*Note: This gift is not eligible for tax-exemptions*</strong></P>
-    
+    <p class="card-subtitle">Your support will make it possible for me to serve in Denver and build relationships with those who are too often forgotten and invisible to the rest of the world.</p>
+    <p class="card-subtitle"><strong>*Note: This gift is not eligible for tax-exemptions*</strong></p>
+
     <div class="freq-tabs">
       <button class="freq-tab active" onclick="setFreq('once', this)">One Time</button>
       <button class="freq-tab" onclick="setFreq('monthly', this)">Monthly</button>
@@ -678,19 +715,43 @@ nav a:hover, nav a.active { color: var(--gold-light); }
 <footer>
   <div class="footer-name">Sergio Angulo · Christ in the City</div>
   <p><a href="mailto:sergio28@christinthecity.org">Contact</a></p>
-
 </footer>
 
 <script>
   const WORKER_URL = 'https://sergio-donations-backend.sergio28.workers.dev/';
   const STATS_URL  = 'https://script.google.com/macros/s/AKfycbxe-I5f5sLH52IRG9gdFPT1YLNASzebhfbh3uwgQpTOnxnYFMuO2kBZA6RLheZwqebIsQ/exec';
 
+  // ── HAMBURGER MENU ──
+  function toggleMenu() {
+    const btn = document.getElementById('hamburger');
+    const nav = document.getElementById('mobileNav');
+    const isOpen = nav.classList.toggle('open');
+    btn.classList.toggle('open', isOpen);
+    btn.setAttribute('aria-expanded', isOpen);
+  }
+
+  document.querySelectorAll('.mobile-nav a').forEach(link => {
+    link.addEventListener('click', () => {
+      document.getElementById('mobileNav').classList.remove('open');
+      document.getElementById('hamburger').classList.remove('open');
+    });
+  });
+
+  document.addEventListener('click', e => {
+    const nav = document.getElementById('mobileNav');
+    const btn = document.getElementById('hamburger');
+    if (nav.classList.contains('open') && !nav.contains(e.target) && !btn.contains(e.target)) {
+      nav.classList.remove('open');
+      btn.classList.remove('open');
+      btn.setAttribute('aria-expanded', false);
+    }
+  });
+
   // ── STRIPE SETUP ──
   let stripe, cardElement;
 
   function initStripe() {
     if (typeof Stripe === 'undefined') {
-      // Stripe.js hasn't loaded yet — retry after a short delay
       setTimeout(initStripe, 200);
       return;
     }
@@ -819,7 +880,6 @@ nav a:hover, nav a.active { color: var(--gold-light); }
     btn.disabled = true;
     document.getElementById('submitLabel').textContent = 'Processing…';
 
-    // ── TOKENIZE CARD VIA STRIPE ──
     const { token, error } = await stripe.createToken(cardElement, {
       name: document.getElementById('cardName').value.trim()
     });
@@ -847,8 +907,6 @@ nav a:hover, nav a.active { color: var(--gold-light); }
       amount:      getAmount(),
       frequency:   currentFreq,
       note:        document.getElementById('donorNote').value.trim(),
-      hearAbout:   document.getElementById('hearAbout') ? document.getElementById('hearAbout').value : '',
-      podcast:     document.getElementById('podcast') ? document.getElementById('podcast').value : '',
       honoree:     document.getElementById('honoree').value.trim(),
       giftType:    document.querySelector('input[name="giftType"]:checked') ? document.querySelector('input[name="giftType"]:checked').value : '',
       notifyEmail: document.getElementById('notifyEmail').value.trim()
