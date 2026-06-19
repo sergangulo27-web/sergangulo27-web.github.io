@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>My Story — Sergio Angulo</title>
+<title>Contact Sergio Angulo — Christ in the City</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -19,6 +19,8 @@
   --text-mid: #4a4a4a;
   --text-muted: #7a7a7a;
   --border: #e2d9cc;
+  --error: #c0392b;
+  --success: #1a6b3a;
   --radius: 6px;
   --shadow: 0 2px 16px rgba(26,39,68,0.10);
 }
@@ -44,9 +46,7 @@ header {
   border: 2px solid var(--gold);
   display: flex; align-items: center; justify-content: center;
   background: rgba(200,151,58,0.15);
-  overflow: hidden; padding: 0;
 }
-.logo-icon img { width: 100%; height: 100%; object-fit: cover; object-position: center 15%; }
 .logo-text { color: #fff; font-family: 'Playfair Display', serif; font-size: 1rem; line-height: 1.2; font-weight: 400; }
 .logo-text span { display: block; font-size: 0.65rem; color: var(--gold-light); font-family: 'Lato', sans-serif; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 300; }
 nav { display: flex; gap: 1.5rem; }
@@ -109,16 +109,16 @@ nav a:hover, nav a.active { color: var(--gold-light); }
 }
 
 /* ── HERO ── */
-.story-hero {
+.missionary-hero {
   background: var(--navy);
   position: relative;
   overflow: hidden;
-  padding: 6rem 2rem 5rem;
+  padding: 17rem 2rem 2.5rem;
 }
-.story-hero::before {
+.missionary-hero::before {
   content: '';
   position: absolute; inset: 0;
-  background-image: url("images/fr.michael_hike.webp");
+  background-image: url("images/IMG_2911.PNG");
   background-size: cover;
   background-position: center 40%;
   opacity: 0.22;
@@ -126,20 +126,58 @@ nav a:hover, nav a.active { color: var(--gold-light); }
 .hero-inner {
   max-width: 820px;
   margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  align-items: center;
   position: relative;
 }
+
+.hero-text { color: #fff; }
 .hero-eyebrow {
   font-size: 0.68rem; letter-spacing: 0.22em; text-transform: uppercase;
   color: var(--gold-light); font-weight: 700; margin-bottom: 0.6rem;
   display: flex; align-items: center; gap: 8px;
 }
 .hero-eyebrow::before { content: ''; display: inline-block; width: 20px; height: 1px; background: var(--gold); }
-.hero-inner h1 {
+.hero-text h1 {
   font-family: 'Playfair Display', serif;
   font-size: 2rem; font-weight: 400; line-height: 1.2;
-  color: #fff; margin-bottom: 0.5rem;
+  margin-bottom: 0.4rem;
 }
-.hero-inner h1 em { font-style: italic; color: var(--gold-light); }
+.hero-text h1 em { font-style: italic; color: var(--gold-light); }
+.hero-text .role {
+  font-size: 0.78rem; color: rgba(255,255,255,0.55);
+  letter-spacing: 0.1em; text-transform: uppercase; font-weight: 700;
+  margin-bottom: 0.85rem;
+}
+.hero-text p {
+  font-size: 0.95rem; color: rgba(255,255,255,0.72);
+  line-height: 1.7; font-weight: 300;
+  margin-bottom: 1.25rem;
+}
+.hero-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+.btn-gold {
+  background: var(--gold); color: var(--navy);
+  border: none; padding: 0.6rem 1.35rem;
+  font-size: 0.8rem; font-weight: 700;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  border-radius: var(--radius); cursor: pointer; text-decoration: none;
+  display: inline-flex; align-items: center; gap: 6px;
+  transition: background 0.2s;
+}
+.btn-gold:hover { background: var(--gold-light); }
+.btn-outline {
+  background: transparent; color: rgba(255,255,255,0.8);
+  border: 1.5px solid rgba(255,255,255,0.25);
+  padding: 0.6rem 1.35rem;
+  font-size: 0.8rem; font-weight: 700;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  border-radius: var(--radius); cursor: pointer; text-decoration: none;
+  display: inline-flex; align-items: center; gap: 6px;
+  transition: all 0.2s;
+}
+.btn-outline:hover { border-color: var(--gold); color: var(--gold-light); }
 
 /* ── PAGE CONTAINER ── */
 .page-container {
@@ -150,7 +188,7 @@ nav a:hover, nav a.active { color: var(--gold-light); }
   gap: 1.5rem;
 }
 
-/* ── CARD ── */
+/* ── CARDS ── */
 .card {
   background: var(--warm-white);
   border: 1px solid var(--border);
@@ -158,75 +196,167 @@ nav a:hover, nav a.active { color: var(--gold-light); }
   padding: 2rem 2.25rem;
   box-shadow: var(--shadow);
 }
-
-/* ── PHOTO + TEXT LAYOUT ── */
-.story-intro { overflow: hidden; }
-.story-photo {
-  float: left;
-  width: 200px; height: 240px;
-  border-radius: 10px; overflow: hidden;
-  border: 2px solid var(--border);
-  margin: 0 1.75rem 1rem 0;
+.card-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.2rem; font-weight: 600;
+  color: var(--navy); margin-bottom: 0.25rem;
 }
-.story-photo img { width: 100%; height: 100%; object-fit: cover; object-position: center 15%; }
+.card-subtitle { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.5rem; line-height: 1.6; }
 
-/* ── ABOUT BODY ── */
-.about-body { font-size: 0.95rem; color: var(--text-mid); line-height: 1.85; }
+/* ── TWO COLUMN LAYOUT ── */
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+
+/* ── CONTACT METHODS ── */
+.contact-methods { display: grid; gap: 1rem; }
+.contact-method {
+  display: flex; align-items: flex-start; gap: 1rem;
+  padding: 1.1rem 1.25rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: #fff;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  text-decoration: none;
+}
+.contact-method:hover { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(200,151,58,0.1); }
+.method-icon {
+  width: 42px; height: 42px; border-radius: 8px;
+  background: rgba(26,39,68,0.06);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.method-icon svg { width: 20px; height: 20px; stroke: var(--navy); fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+.method-label { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.1em; font-weight: 700; color: var(--text-muted); margin-bottom: 2px; }
+.method-value { font-size: 0.95rem; color: var(--text-dark); font-weight: 400; }
+.method-desc { font-size: 0.78rem; color: var(--text-muted); margin-top: 2px; }
+
+/* ── ABOUT SECTION ── */
+.about-body { font-size: 0.95rem; color: var(--text-mid); line-height: 1.8; }
 .about-body p { margin-bottom: 1rem; }
 .about-body p:last-child { margin-bottom: 0; }
-
-/* ── PULL QUOTE ── */
 .pull-quote {
   border-left: 3px solid var(--gold);
-  padding: 0.6rem 1.1rem;
-  margin: 1.5rem 0;
+  padding: 0.5rem 1.1rem;
+  margin: 1.25rem 0;
   font-family: 'Playfair Display', serif;
   font-style: italic;
-  font-size: 1.1rem;
+  font-size: 1.05rem;
   color: var(--navy);
-  line-height: 1.65;
-  background: rgba(200,151,58,0.04);
-  border-radius: 0 6px 6px 0;
+  line-height: 1.6;
 }
 
-/* ── SECTION DIVIDER ── */
-hr { border: none; border-top: 1px solid var(--border); margin: 1.5rem 0; }
+/* ── PRAYER REQUESTS ── */
+.prayer-list { list-style: none; display: grid; gap: 0.75rem; }
+.prayer-list li {
+  display: flex; align-items: flex-start; gap: 0.75rem;
+  font-size: 0.92rem; color: var(--text-mid); line-height: 1.6;
+}
+.prayer-bullet {
+  flex-shrink: 0;
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  background: var(--navy);
+  display: flex; align-items: center; justify-content: center;
+  margin-top: 1px;
+}
+.prayer-bullet::after {
+  content: '✝';
+  font-size: 0.65rem;
+  color: var(--gold);
+}
 
-/* ── CTA BOX ── */
-.cta-box {
+/* ── CONTACT FORM ── */
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem 1.25rem; }
+.form-group { display: flex; flex-direction: column; gap: 5px; }
+.form-group.full { grid-column: 1 / -1; }
+label { font-size: 0.78rem; font-weight: 700; color: var(--text-mid); letter-spacing: 0.04em; text-transform: uppercase; }
+input[type=text], input[type=email], input[type=tel], select, textarea {
+  padding: 0.6rem 0.85rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font-size: 0.92rem; font-family: 'Lato', sans-serif;
+  color: var(--text-dark); background: #fff;
+  transition: border-color 0.2s; width: 100%;
+  -webkit-appearance: none;
+}
+input:focus, select:focus, textarea:focus { outline: none; border-color: var(--gold); box-shadow: 0 0 0 3px rgba(200,151,58,0.15); }
+select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%237a7a7a' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 10px center; padding-right: 2rem;
+}
+
+/* ── SUBMIT ── */
+.submit-btn {
+  background: var(--navy); color: #fff; border: none;
+  padding: 0.9rem 2.5rem; font-size: 0.9rem;
+  font-family: 'Lato', sans-serif; font-weight: 700;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  border-radius: var(--radius); cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+  position: relative; overflow: hidden;
+  margin-top: 0.5rem;
+}
+.submit-btn::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: var(--gold); }
+.submit-btn:hover { background: #243354; }
+.submit-btn:active { transform: scale(0.99); }
+
+/* ── SUCCESS ── */
+.success-msg {
+  display: none;
+  background: #f0faf4; border: 1px solid #a3d4b5;
+  border-radius: 8px; padding: 1.25rem 1.5rem;
+  text-align: center; margin-top: 1rem;
+}
+.success-msg.visible { display: block; }
+.success-msg p { color: #1a6b3a; font-size: 0.92rem; line-height: 1.6; }
+
+/* ── DIVIDER ── */
+hr { border: none; border-top: 1px solid var(--border); margin: 1.25rem 0; }
+
+/* ── SOCIAL LINKS ── */
+.social-row { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-top: 1.25rem; }
+.social-chip {
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 0.45rem 0.9rem;
+  border: 1px solid var(--border); border-radius: 20px;
+  background: #fff; text-decoration: none;
+  font-size: 0.8rem; color: var(--text-mid); font-weight: 700;
+  letter-spacing: 0.04em; transition: all 0.2s;
+}
+.social-chip svg { width: 15px; height: 15px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.social-chip:hover { border-color: var(--gold); color: var(--navy); }
+
+/* ── MISSION ORG BOX ── */
+.org-box {
   background: var(--navy);
   border-radius: 10px;
-  padding: 2rem 2.25rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1.5rem;
-  flex-wrap: wrap;
+  padding: 1.75rem 2rem;
+  display: flex; align-items: center; gap: 1.5rem;
 }
-.cta-box-text h3 {
-  font-family: 'Playfair Display', serif;
-  color: #fff; font-size: 1.15rem; font-weight: 600;
-  margin-bottom: 4px;
+.org-logo-circle {
+  width: 56px; height: 56px; border-radius: 50%;
+  border: 2px solid rgba(200,151,58,0.5);
+  background: rgba(200,151,58,0.12);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
 }
-.cta-box-text p { font-size: 0.85rem; color: rgba(255,255,255,0.6); line-height: 1.5; }
-.btn-gold {
-  background: var(--gold); color: var(--navy);
-  border: none; padding: 0.7rem 1.5rem;
-  font-size: 0.82rem; font-weight: 700;
-  letter-spacing: 0.08em; text-transform: uppercase;
-  border-radius: var(--radius); cursor: pointer; text-decoration: none;
-  display: inline-flex; align-items: center; gap: 6px;
-  transition: background 0.2s; white-space: nowrap;
-}
-.btn-gold:hover { background: var(--gold-light); }
+.org-logo-circle svg { width: 26px; height: 26px; stroke: var(--gold); fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+.org-text h3 { font-family: 'Playfair Display', serif; color: #fff; font-size: 1.05rem; font-weight: 600; margin-bottom: 3px; }
+.org-text p { font-size: 0.82rem; color: rgba(255,255,255,0.6); line-height: 1.5; margin-bottom: 0.65rem; }
+.org-text a { color: var(--gold-light); font-size: 0.8rem; font-weight: 700; letter-spacing: 0.06em; text-decoration: none; text-transform: uppercase; }
+.org-text a:hover { color: #fff; }
 
 /* ── RESPONSIVE ── */
 @media (max-width: 620px) {
-  .story-photo { float: none; width: 100%; height: 220px; margin: 0 0 1.25rem 0; }
+  .hero-inner { grid-template-columns: 1fr; }
+  .profile-photo-wrap { display: flex; justify-content: center; }
+  .hero-text h1 { font-size: 1.7rem; }
+  .two-col { grid-template-columns: 1fr; }
+  .form-grid { grid-template-columns: 1fr; }
+  .form-group.full { grid-column: 1; }
   nav { display: none !important; }
   .hamburger { display: flex; }
   .card { padding: 1.5rem 1.25rem; }
-  .cta-box { flex-direction: column; text-align: center; }
+  .org-box { flex-direction: column; text-align: center; }
 }
 </style>
 </head>
@@ -235,15 +365,15 @@ hr { border: none; border-top: 1px solid var(--border); margin: 1.5rem 0; }
 <!-- HEADER -->
 <header>
   <a class="logo" href="index.html">
-    <div class="logo-icon">
-      <img src="images/Sergio_Angulo_copy.jpeg" alt="Sergio Angulo">
+    <div class="logo-icon" style="overflow:hidden; padding:0;">
+      <img src="images/Sergio_Angulo_copy.jpeg" alt="Sergio Angulo" style="width:100%; height:100%; object-fit:cover; object-position:center 15%;">
     </div>
     <div class="logo-text">Sergio Angulo <span>Christ in the City</span></div>
   </a>
   <nav>
     <a href="index.html">Give</a>
-    <a href="story.html" class="active">My Story</a>
-    <a href="contact.html">Contact</a>
+    <a href="story.html">My Story</a>
+    <a href="contact.html" class="active">Contact</a>
   </nav>
   <button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false" onclick="toggleMenu()">
     <span></span><span></span><span></span>
@@ -253,84 +383,190 @@ hr { border: none; border-top: 1px solid var(--border); margin: 1.5rem 0; }
 <!-- MOBILE NAV -->
 <div class="mobile-nav" id="mobileNav">
   <a href="index.html">Give</a>
-  <a href="story.html" class="active">My Story</a>
-  <a href="contact.html">Contact</a>
+  <a href="story.html">My Story</a>
+  <a href="contact.html" class="active">Contact</a>
 </div>
 
 <!-- HERO -->
-<div class="story-hero">
+<div class="missionary-hero">
   <div class="hero-inner">
-    <div class="hero-eyebrow">My Story</div>
-    <h1>Who I Am —<br><em>and Why I'm Here</em></h1>
+    <div class="hero-text">
+      <div class="hero-eyebrow">Get in Touch</div>
+      <h1>Reach Out to<br><em>Sergio</em></h1>
+      <p>Whether you want to pray together, learn more about the mission, or simply say hello — I'd love to hear from you. Don't hesitate to reach out.</p>
+    </div>
   </div>
 </div>
 
 <!-- PAGE CONTENT -->
 <div class="page-container">
 
-  <!-- INTRO WITH PHOTO -->
+  <!-- CONTACT METHODS -->
   <div class="card">
-    <div class="story-intro">
-      <div class="story-photo">
-        <img src="images/GOPR6935.JPG" alt="Sergio Angulo paragliding">
+    <p class="card-title">Ways to Connect</p>
+    <p class="card-subtitle">I check my messages daily and try to respond within 48 hours.</p>
+    <div class="contact-methods">
+
+      <a class="contact-method" href="mailto:sergio28@christinthecity.org">
+        <div class="method-icon">
+          <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        </div>
+        <div>
+          <div class="method-label">Email</div>
+          <div class="method-value">sergio28@christinthecity.org</div>
+          <div class="method-desc">Best for prayer requests, questions, and notes of encouragement</div>
+        </div>
+      </a>
+
+    </div>
+
+    <hr style="border:none; border-top:1px solid var(--border); margin:1.5rem 0 1.25rem;">
+    <p style="font-size:0.78rem; font-weight:700; color:var(--text-muted); letter-spacing:0.08em; text-transform:uppercase; margin-bottom:0.75rem;">Follow Along</p>
+    <div class="social-row">
+
+      <a class="social-chip" href="https://www.instagram.com/sergangulo/" target="_blank" rel="noopener">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+          <circle cx="12" cy="12" r="4"/>
+          <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+        </svg>
+        Instagram
+      </a>
+
+      <a class="social-chip" href="https://www.facebook.com/sergioangulo27" target="_blank" rel="noopener">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/>
+        </svg>
+        Facebook
+      </a>
+
+      <a class="social-chip" href="https://www.youtube.com/@ChristInTheCity" target="_blank" rel="noopener">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M22.54 6.42a2.78 2.78 0 00-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46A2.78 2.78 0 001.46 6.42 29 29 0 001 12a29 29 0 00.46 5.58 2.78 2.78 0 001.95 1.96C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 001.95-1.96A29 29 0 0023 12a29 29 0 00-.46-5.58z"/>
+          <polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" fill="currentColor" stroke="none"/>
+        </svg>
+        YouTube
+      </a>
+
+    </div>
+  </div>
+
+  <!-- PRAYER REQUESTS -->
+  <div class="card">
+    <p class="card-title">Prayer Requests</p>
+    <p class="card-subtitle">I ask for your prayers in these specific areas of my mission:</p>
+    <ul class="prayer-list">
+      <li>
+        <div class="prayer-bullet"></div>
+        <span>For the people I meet on the streets — that they would feel truly seen and know God's love through each encounter.</span>
+      </li>
+      <li>
+        <div class="prayer-bullet"></div>
+        <span>For my spiritual strength and endurance as I carry the weight of others' stories each day.</span>
+      </li>
+      <li>
+        <div class="prayer-bullet"></div>
+        <span>For full financial support — that God would raise up a generous community to sustain this mission year-round.</span>
+      </li>
+      <li>
+        <div class="prayer-bullet"></div>
+        <span>For the city of Denver — that hearts would be opened to the dignity of every person, housed or not.</span>
+      </li>
+      <li>
+        <div class="prayer-bullet"></div>
+        <span>For my family and loved ones who support me from a distance through this calling.</span>
+      </li>
+    </ul>
+  </div>
+
+  <!-- SEND A MESSAGE FORM -->
+  <div class="card">
+    <p class="card-title">Send Me a Message</p>
+    <p class="card-subtitle">Leave a note of encouragement, share a prayer, or ask a question. I read every message personally.</p>
+
+    <div id="messageFormWrap">
+      <div class="form-grid">
+        <div class="form-group">
+          <label for="msgFirst">First Name <span style="color:var(--error)">*</span></label>
+          <input type="text" id="msgFirst" placeholder="Lightning">
+        </div>
+        <div class="form-group">
+          <label for="msgLast">Last Name <span style="color:var(--error)">*</span></label>
+          <input type="text" id="msgLast" placeholder="McQueen">
+        </div>
+        <div class="form-group full">
+          <label for="msgEmail">Email Address <span style="color:var(--error)">*</span></label>
+          <input type="email" id="msgEmail" placeholder="mcqueen@pistoncup.com">
+        </div>
+        <div class="form-group full">
+          <label for="msgSubject">Subject</label>
+          <select id="msgSubject">
+            <option value="">Select a topic…</option>
+            <option>Note of encouragement</option>
+            <option>Prayer request</option>
+            <option>Question about the mission</option>
+            <option>Interest in supporting</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="form-group full">
+          <label for="msgBody">Your Message <span style="color:var(--error)">*</span></label>
+          <textarea id="msgBody" rows="5" placeholder="Dear Sergio, I wanted to let you know…" style="resize:vertical;"></textarea>
+        </div>
       </div>
-      <p class="card-title" style="font-family:'Playfair Display',serif; font-size:1.2rem; font-weight:600; color:var(--navy); margin-bottom:1rem;">Background</p>
-      <div class="about-body">
-        <p>I was born in San Diego, raised in Mexico, went to school in California (very confusing I know). After high school, I flew across the country and went to college in Boston. It was here where my life was radically transformed and I began taking my faith much more seriously. I was blessed to be surrounded by a great community of Catholic men and women through Saint Paul's Outreach (SPO) and continued to develop my faith. Took on several leadership roles there as well, from leading men's sessions, small groups, large co-ed environments, and giving talks to over 80 students at retreats. Probably the most formative experience was in their household program where groups of men and women live (separately) with an intentional way of life alongside the missionaries. I lived with my best friends whom I now call my brothers and it was by far the best part of my college experience. Graduated Spring of 2025 with a B.S in Mechanical Engineering and Design at Northeastern University. Since then I decided to pursue an MBA from Northeastern and started working full time at a consumer product company. </p>
 
-        <p>I am the youngest of two siblings. I'm always trying to do something fun or interesting, whether it's running, hiking, exploring, reading, watching movies, sharing a laugh or two with the boys, going out somewhere nice or somewhere maybe we shouldn't be. (You're not in trouble unless you get caught :) <em>I might delete that part… </em> </p>
+      <div id="msgError" style="display:none; background:#fef2f2; border:1px solid #f5c6cb; border-radius:var(--radius); padding:0.75rem 1rem; color:var(--error); font-size:0.88rem; margin-top:1rem;"></div>
+
+      <button class="submit-btn" onclick="sendMessage()">
+        <span id="msgBtnLabel">Send Message</span>
+      </button>
+
+      <div class="success-msg" id="msgSuccess">
+        <p><strong>✝ Your message has been sent!</strong><br>Thank you for reaching out. I will read your message and reply within a couple of days. God bless you.</p>
       </div>
     </div>
   </div>
 
-  <!-- THE STORY -->
-  <div class="card">
-    <p class="card-title" style="font-family:'Playfair Display',serif; font-size:1.2rem; font-weight:600; color:var(--navy); margin-bottom:1rem;">What Brought Me to Christ in the City</p>
-    <div class="about-body">
-      <p>If you had asked me six months ago what I would be doing next year, Christ in the City would not have been on my radar. I was beginning my career as an engineer at a great company, surrounded by people I genuinely enjoyed working with. After years of hard work, I was accomplishing many of the goals I had set for myself when I moved to Boston five years ago. By most measures, life was going according to plan. Yet God had other plans.</p>
-
-      <p>A priest friend invited me on a spring break mission trip to serve people experiencing homelessness in Denver. I signed up without thinking too much about it. I knew it would be one of the last opportunities to spend time with him before he moved to Rome. Only when I was sitting in the airport terminal at 4 am, exhausted after a busy week of work, classes, and life, did the reality sink in: I had just committed to a full week of street ministry.</p>
-
-      <p>I had some experience with homeless ministry before, but I would not have described myself as enthusiastic about it. I knew there was a deeper love to be discovered there, but I had not experienced it for myself. As I boarded the plane, I remember thinking: <em>"This will either be a terrible idea, or God is going to do something big."</em></p>
-
-      <p>God did something big.</p>
-
-      <div class="pull-quote">"I arrived expecting to serve, but it quickly became clear that I was the one receiving a gift."</div>
-
-      <p>During that week, I not only encountered people living on the streets but also witnessed the lives of the missionaries themselves. There was a richness, freedom, and joy in the way they lived that is difficult to put into words but impossible to ignore. For the first time, I began to understand what it meant to love the poor — not as a project or obligation, but as friends. Being there felt strangely like home, and by the end of the week, I did not want to leave.</p>
-
-      <p>When I returned to Boston, something had changed. My job had not changed, but my perspective had. I still enjoyed engineering, yet after experiencing a deeper sense of joy, meaning, and purpose, everything else seemed dimmer by comparison. That same night, I submitted my application to Christ in the City.</p>
-
-      <p>As I continued discerning, I found myself pulled between two good paths. Professionally, things were going well, and many of the emotions from the mission trip had faded. I knew I could not make a decision based solely on a powerful experience. I needed clarity.</p>
-
-      <div class="pull-quote">"I realized how often I had sought meaning through achievement and recognition rather than through self-gift."</div>
-
-      <p>That clarity came on Holy Thursday. While praying with the Gospel and later witnessing the Washing of the Feet at Mass, I was struck by the simplicity of Christ's example. The priest quietly knelt, washed the feet of others, and then continued with the Mass. No spectacle. No recognition. Just love expressed through humble service. In that moment, everything came into focus. I sensed the Lord inviting me to follow His example.</p>
-
-      <p>The answer became simple: <em>"Yes, Lord."</em></p>
+  <!-- MISSION ORG -->
+  <div class="org-box">
+    <div class="org-logo-circle" style="background:transparent; border:none; width:140px; height:50px; flex-shrink:0;">
+      <img src="images/CIC_Primary_White.png" alt="Christ in the City" style="width:100%; height:100%; object-fit:contain;">
     </div>
-  </div>
-
-  <!-- LOOKING FORWARD -->
-  <div class="card">
-    <p class="card-title" style="font-family:'Playfair Display',serif; font-size:1.2rem; font-weight:600; color:var(--navy); margin-bottom:1rem;">What I'm Looking Forward To</p>
-    <div class="about-body">
-      <p>Gratefully, there is much that I am looking forward to this year. Above all, I am excited for the opportunity to continue growing in love for the poor and to learn what it means to serve them more wholeheartedly. I look forward to sharing life in community, building deep friendships, and being challenged in ways I have never been challenged before. I know this year will stretch me, teach me, and invite me to grow in virtue, humility, and trust as I continue becoming the man God created me to be.</p>
-
-      <p>I am also eager to deepen my faith and take it to new heights — both spiritually and physically. And, of course, I hope to take advantage of Colorado's sunshine and unpredictable weather, exploring a few 14ers along the way and perhaps striking a Frassati pose or two at the summit.</p>
+    <div class="org-text">
+      <h3>Christ in the City</h3>
+      <p>Learn more about the organization I serve with and the broader mission in Denver and Philadelphia.</p>
+      <a href="https://www.christinthecity.org" target="_blank" rel="noopener">Visit christinthecity.org →</a>
+      <div style="display:flex; gap:0.6rem; flex-wrap:wrap; margin-top:0.75rem;">
+        <a href="https://www.instagram.com/christinthecity/" target="_blank" rel="noopener" style="display:inline-flex; align-items:center; gap:6px; padding:0.35rem 0.75rem; border:1px solid rgba(200,151,58,0.4); border-radius:20px; background:rgba(200,151,58,0.08); text-decoration:none; font-size:0.75rem; color:rgba(255,255,255,0.7); font-weight:700; letter-spacing:0.04em; transition:all 0.2s;">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><circle cx="12" cy="12" r="4"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+          Instagram
+        </a>
+        <a href="https://www.facebook.com/christinthecitymissionaries" target="_blank" rel="noopener" style="display:inline-flex; align-items:center; gap:6px; padding:0.35rem 0.75rem; border:1px solid rgba(200,151,58,0.4); border-radius:20px; background:rgba(200,151,58,0.08); text-decoration:none; font-size:0.75rem; color:rgba(255,255,255,0.7); font-weight:700; letter-spacing:0.04em; transition:all 0.2s;">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
+          Facebook
+        </a>
+        <a href="https://www.youtube.com/@ChristInTheCity" target="_blank" rel="noopener" style="display:inline-flex; align-items:center; gap:6px; padding:0.35rem 0.75rem; border:1px solid rgba(200,151,58,0.4); border-radius:20px; background:rgba(200,151,58,0.08); text-decoration:none; font-size:0.75rem; color:rgba(255,255,255,0.7); font-weight:700; letter-spacing:0.04em; transition:all 0.2s;">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22.54 6.42a2.78 2.78 0 00-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46A2.78 2.78 0 001.46 6.42 29 29 0 001 12a29 29 0 00.46 5.58 2.78 2.78 0 001.95 1.96C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 001.95-1.96A29 29 0 0023 12a29 29 0 00-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" fill="currentColor" stroke="none"/></svg>
+          YouTube
+        </a>
+        <a href="https://www.tiktok.com/@christinthecity" target="_blank" rel="noopener" style="display:inline-flex; align-items:center; gap:6px; padding:0.35rem 0.75rem; border:1px solid rgba(200,151,58,0.4); border-radius:20px; background:rgba(200,151,58,0.08); text-decoration:none; font-size:0.75rem; color:rgba(255,255,255,0.7); font-weight:700; letter-spacing:0.04em; transition:all 0.2s;">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.76a4.85 4.85 0 01-1.01-.07z"/></svg>
+          TikTok
+        </a>
+        <a href="https://x.com/christinthecity" target="_blank" rel="noopener" style="display:inline-flex; align-items:center; gap:6px; padding:0.35rem 0.75rem; border:1px solid rgba(200,151,58,0.4); border-radius:20px; background:rgba(200,151,58,0.08); text-decoration:none; font-size:0.75rem; color:rgba(255,255,255,0.7); font-weight:700; letter-spacing:0.04em; transition:all 0.2s;">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.742l7.73-8.835L2.058 2.25H8.08l4.259 5.629L18.244 2.25zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+          X
+        </a>
+        <a href="https://www.linkedin.com/company/christ-in-the-city" target="_blank" rel="noopener" style="display:inline-flex; align-items:center; gap:6px; padding:0.35rem 0.75rem; border:1px solid rgba(200,151,58,0.4); border-radius:20px; background:rgba(200,151,58,0.08); text-decoration:none; font-size:0.75rem; color:rgba(255,255,255,0.7); font-weight:700; letter-spacing:0.04em; transition:all 0.2s;">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+          LinkedIn
+        </a>
+        <a href="mailto:info@christinthecity.org" style="display:inline-flex; align-items:center; gap:6px; padding:0.35rem 0.75rem; border:1px solid rgba(200,151,58,0.4); border-radius:20px; background:rgba(200,151,58,0.08); text-decoration:none; font-size:0.75rem; color:rgba(255,255,255,0.7); font-weight:700; letter-spacing:0.04em; transition:all 0.2s;">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          Email
+        </a>
+      </div>
     </div>
-  </div>
-
-  <!-- CTA -->
-  <div class="cta-box">
-    <div class="cta-box-text">
-      <h3>Walk This Mission With Me</h3>
-      <p>Your support keeps me on the streets and sustained in this calling.</p>
-    </div>
-    <a href="index.html" class="btn-gold">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
-      Support My Mission
-    </a>
   </div>
 
 </div>
@@ -342,6 +578,7 @@ hr { border: none; border-top: 1px solid var(--border); margin: 1.5rem 0; }
 </footer>
 
 <script>
+  // ── HAMBURGER MENU ──
   function toggleMenu() {
     const btn = document.getElementById('hamburger');
     const nav = document.getElementById('mobileNav');
@@ -350,6 +587,7 @@ hr { border: none; border-top: 1px solid var(--border); margin: 1.5rem 0; }
     btn.setAttribute('aria-expanded', isOpen);
   }
 
+  // Close menu when a link is tapped
   document.querySelectorAll('.mobile-nav a').forEach(link => {
     link.addEventListener('click', () => {
       document.getElementById('mobileNav').classList.remove('open');
@@ -357,6 +595,7 @@ hr { border: none; border-top: 1px solid var(--border); margin: 1.5rem 0; }
     });
   });
 
+  // Close menu on outside tap
   document.addEventListener('click', e => {
     const nav = document.getElementById('mobileNav');
     const btn = document.getElementById('hamburger');
@@ -366,6 +605,66 @@ hr { border: none; border-top: 1px solid var(--border); margin: 1.5rem 0; }
       btn.setAttribute('aria-expanded', false);
     }
   });
+
+  // ── CONTACT FORM ──
+  const WORKER_URL = 'https://sergio-donations-backend.sergio28.workers.dev/';
+
+  async function sendMessage() {
+    const errEl = document.getElementById('msgError');
+    errEl.style.display = 'none';
+    const errors = [];
+
+    const first   = document.getElementById('msgFirst').value.trim();
+    const last    = document.getElementById('msgLast').value.trim();
+    const email   = document.getElementById('msgEmail').value.trim();
+    const body    = document.getElementById('msgBody').value.trim();
+    const subject = document.getElementById('msgSubject').value;
+
+    if (!first) errors.push('First name is required.');
+    if (!last)  errors.push('Last name is required.');
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) errors.push('A valid email address is required.');
+    if (!body)  errors.push('Please write a message.');
+
+    if (errors.length) {
+      errEl.innerHTML = errors.map(e => '• ' + e).join('<br>');
+      errEl.style.display = 'block';
+      return;
+    }
+
+    const btn = document.querySelector('.submit-btn');
+    btn.disabled = true;
+    document.getElementById('msgBtnLabel').textContent = 'Sending…';
+
+    try {
+      const res = await fetch('https://formspree.io/f/mrevkbpd', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name:    first + ' ' + last,
+          email:   email,
+          subject: subject,
+          message: body
+        })
+      });
+
+      if (res.ok) {
+        document.getElementById('msgSuccess').classList.add('visible');
+        btn.style.display = 'none';
+        document.getElementById('msgFirst').disabled   = true;
+        document.getElementById('msgLast').disabled    = true;
+        document.getElementById('msgEmail').disabled   = true;
+        document.getElementById('msgSubject').disabled = true;
+        document.getElementById('msgBody').disabled    = true;
+      } else {
+        throw new Error('Formspree error');
+      }
+    } catch (err) {
+      errEl.innerHTML = '• Something went wrong. Please try emailing directly at sergio28@christinthecity.org';
+      errEl.style.display = 'block';
+      btn.disabled = false;
+      document.getElementById('msgBtnLabel').textContent = 'Send Message';
+    }
+  }
 </script>
 </body>
 </html>
