@@ -679,7 +679,10 @@ footer .footer-name { color: rgba(255,255,255,0.8); font-family: 'Playfair Displ
         <span id="bankConnectLabel">Connect Bank Account</span>
         <span style="position:absolute; bottom:0; left:0; right:0; height:3px; background:var(--gold);"></span>
       </button>
-      <div id="bankConnected" style="display:none; margin-top:1rem; padding:0.85rem 1rem; background:#f0faf4; border:1px solid #a3d4b5; border-radius:var(--radius); font-size:0.88rem; color:#1a6b3a; align-items:center; gap:8px;">
+      <div id="bankConnected" style="display:none; margin-top:1rem; padding:0.85rem 1.1rem; background:rgba(26,39,68,0.06); border:1.5px solid var(--gold); border-radius:var(--radius); font-size:0.88rem; color:var(--navy); align-items:center; gap:10px;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          <span id="bankConnectedLabel" style="font-weight:700; letter-spacing:0.03em;">Bank account connected</span>
+        </div>
         ✅ <span id="bankConnectedLabel">Bank account connected</span>
       </div>
       <div id="bank-errors" style="display:none; color:var(--error); font-size:0.82rem; margin-top:0.75rem;"></div>
@@ -889,7 +892,7 @@ footer .footer-name { color: rgba(255,255,255,0.8); font-family: 'Playfair Displ
       connectedCustomerId = data.customerId;
 
       // Show success state
-      document.getElementById('bankConnected').style.display = 'flex';      document.getElementById('bankConnectedLabel').textContent = `✅ ${connectedBankName} connected`;
+      document.getElementById('bankConnected').style.display = 'flex';      document.getElementById('bankConnectedLabel').textContent = `${connectedBankName} connected`;
       document.getElementById('bankConnectLabel').textContent = 'Change Bank Account';
       btn.disabled = false;
 
