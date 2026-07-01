@@ -649,16 +649,40 @@ footer .footer-name { color: rgba(255,255,255,0.8); font-family: 'Playfair Displ
   <div class="card">
     <p class="card-title">Payment Information</p>
     <p class="card-subtitle">Encrypted and secure.</p>
-    <div class="form-grid">
-      <div class="form-group full">
-        <label for="cardName">Name on Card <span style="color:var(--error)">*</span></label>
-        <input type="text" id="cardName" placeholder="Lightning McQueen">
+
+    <!-- PAYMENT METHOD TOGGLE -->
+    <div style="display:flex; margin-bottom:1.25rem; border:1px solid var(--border); border-radius:var(--radius); overflow:hidden; width:fit-content;">
+      <button id="tabCard" onclick="setPaymentMethod('card')" style="padding:0.5rem 1.1rem; font-size:0.8rem; font-weight:700; letter-spacing:0.05em; text-transform:uppercase; cursor:pointer; border:none; background:var(--navy); color:#fff; transition:background 0.2s, color 0.2s;">💳 Card</button>
+      <button id="tabBank" onclick="setPaymentMethod('bank')" style="padding:0.5rem 1.1rem; font-size:0.8rem; font-weight:700; letter-spacing:0.05em; text-transform:uppercase; cursor:pointer; border:none; background:transparent; color:var(--text-muted); border-left:1px solid var(--border); transition:background 0.2s, color 0.2s;">🏦 Bank Transfer</button>
+    </div>
+
+    <!-- CARD FIELDS -->
+    <div id="cardFields">
+      <div class="form-grid">
+        <div class="form-group full">
+          <label for="cardName">Name on Card <span style="color:var(--error)">*</span></label>
+          <input type="text" id="cardName" placeholder="Lightning McQueen">
+        </div>
+        <div class="form-group full">
+          <label>Card Details <span style="color:var(--error)">*</span></label>
+          <div id="card-element" style="padding: 0.65rem 0.85rem; border: 1px solid var(--border); border-radius: var(--radius); background: #fff; transition: border-color 0.2s;"></div>
+          <div id="card-errors" style="color: var(--error); font-size: 0.82rem; margin-top: 5px; display:none;"></div>
+        </div>
       </div>
-      <div class="form-group full">
-        <label>Card Details <span style="color:var(--error)">*</span></label>
-        <div id="card-element" style="padding: 0.65rem 0.85rem; border: 1px solid var(--border); border-radius: var(--radius); background: #fff; transition: border-color 0.2s;"></div>
-        <div id="card-errors" style="color: var(--error); font-size: 0.82rem; margin-top: 5px; display:none;"></div>
+    </div>
+
+    <!-- BANK TRANSFER FIELDS -->
+    <div id="bankFields" style="display:none;">
+      <p style="font-size:0.88rem; color:var(--text-mid); line-height:1.6; margin-bottom:1.25rem;">Click the button below to securely connect your bank account. You'll be prompted to log into your bank — no routing numbers needed.</p>
+      <button id="bankConnectBtn" onclick="connectBank()" style="background:var(--navy); color:#fff; border:none; padding:0.75rem 1.5rem; font-size:0.88rem; font-family:'Lato',sans-serif; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; border-radius:var(--radius); cursor:pointer; display:inline-flex; align-items:center; gap:8px; position:relative; overflow:hidden;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+        <span id="bankConnectLabel">Connect Bank Account</span>
+        <span style="position:absolute; bottom:0; left:0; right:0; height:3px; background:var(--gold);"></span>
+      </button>
+      <div id="bankConnected" style="display:none; margin-top:1rem; padding:0.85rem 1rem; background:#f0faf4; border:1px solid #a3d4b5; border-radius:var(--radius); font-size:0.88rem; color:#1a6b3a; display:flex; align-items:center; gap:8px;">
+        ✅ <span id="bankConnectedLabel">Bank account connected</span>
       </div>
+      <div id="bank-errors" style="display:none; color:var(--error); font-size:0.82rem; margin-top:0.75rem;"></div>
     </div>
   </div>
 
@@ -749,6 +773,9 @@ footer .footer-name { color: rgba(255,255,255,0.8); font-family: 'Playfair Displ
 
   // ── STRIPE SETUP ──
   let stripe, cardElement;
+  let currentPaymentMethod = 'card';
+  let connectedBankAccountId = null;
+  let connectedBankName = null;
 
   function initStripe() {
     if (typeof Stripe === 'undefined') {
@@ -783,6 +810,95 @@ footer .footer-name { color: rgba(255,255,255,0.8); font-family: 'Playfair Displ
   }
 
   document.addEventListener('DOMContentLoaded', initStripe);
+
+  // ── PAYMENT METHOD TOGGLE ──
+  function setPaymentMethod(method) {
+    currentPaymentMethod = method;
+    const cardTab = document.getElementById('tabCard');
+    const bankTab = document.getElementById('tabBank');
+    const cardFields = document.getElementById('cardFields');
+    const bankFields = document.getElementById('bankFields');
+
+    if (method === 'card') {
+      cardTab.style.background = 'var(--navy)';
+      cardTab.style.color = '#fff';
+      bankTab.style.background = 'transparent';
+      bankTab.style.color = 'var(--text-muted)';
+      cardFields.style.display = '';
+      bankFields.style.display = 'none';
+    } else {
+      bankTab.style.background = 'var(--navy)';
+      bankTab.style.color = '#fff';
+      cardTab.style.background = 'transparent';
+      cardTab.style.color = 'var(--text-muted)';
+      cardFields.style.display = 'none';
+      bankFields.style.display = '';
+    }
+  }
+
+  // ── BANK CONNECT ──
+  async function connectBank() {
+    const errEl = document.getElementById('bank-errors');
+    errEl.style.display = 'none';
+    const btn = document.getElementById('bankConnectBtn');
+    document.getElementById('bankConnectLabel').textContent = 'Connecting…';
+    btn.disabled = true;
+
+    try {
+      // Request a Financial Connections session from the worker
+      const email = document.getElementById('email').value.trim();
+      const res = await fetch(WORKER_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'create_fc_session', email: email || 'donor@example.com' })
+      });
+      const data = await res.json();
+
+      if (data.error) throw new Error(data.error);
+
+      // Launch Stripe Financial Connections modal
+      const { financialConnectionsSession, error } = await stripe.collectFinancialConnectionsAccounts({
+        clientSecret: data.clientSecret
+      });
+
+      if (error) {
+        if (error.code === 'financial_connections_no_supported_payment_method_type') {
+          errEl.textContent = 'Your bank does not support instant verification. Please use a card instead.';
+        } else {
+          errEl.textContent = error.message || 'Bank connection failed. Please use a card instead.';
+        }
+        errEl.style.display = 'block';
+        document.getElementById('bankConnectLabel').textContent = 'Connect Bank Account';
+        btn.disabled = false;
+        return;
+      }
+
+      const account = financialConnectionsSession.accounts[0];
+      if (!account) {
+        errEl.textContent = 'No bank account was selected. Please try again or use a card.';
+        errEl.style.display = 'block';
+        document.getElementById('bankConnectLabel').textContent = 'Connect Bank Account';
+        btn.disabled = false;
+        return;
+      }
+
+      // Store the account ID for submission
+      connectedBankAccountId = account.id;
+      connectedBankName = account.display_name || account.institution_name || 'Bank account';
+
+      // Show success state
+      document.getElementById('bankConnected').style.display = 'flex';
+      document.getElementById('bankConnectedLabel').textContent = `✅ ${connectedBankName} connected`;
+      document.getElementById('bankConnectLabel').textContent = 'Change Bank Account';
+      btn.disabled = false;
+
+    } catch (err) {
+      errEl.textContent = 'Something went wrong. Please try again or use a card.';
+      errEl.style.display = 'block';
+      document.getElementById('bankConnectLabel').textContent = 'Connect Bank Account';
+      btn.disabled = false;
+    }
+  }
 
   // ── FREQUENCY & AMOUNT ──
   let currentFreq = 'once';
@@ -867,7 +983,8 @@ footer .footer-name { color: rgba(255,255,255,0.8); font-family: 'Playfair Displ
     const email = document.getElementById('email').value.trim();
     if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) errors.push('A valid email address is required.');
     if (!getAmount() || getAmount() < 1) errors.push('Please select or enter a gift amount.');
-    if (!document.getElementById('cardName').value.trim()) errors.push('Name on card is required.');
+    if (currentPaymentMethod === 'card' && !document.getElementById('cardName').value.trim()) errors.push('Name on card is required.');
+    if (currentPaymentMethod === 'bank' && !connectedBankAccountId) errors.push('Please connect your bank account before submitting.');
 
     if (errors.length) {
       errEl.innerHTML = errors.map(e => `• ${e}`).join('<br>');
@@ -880,21 +997,7 @@ footer .footer-name { color: rgba(255,255,255,0.8); font-family: 'Playfair Displ
     btn.disabled = true;
     document.getElementById('submitLabel').textContent = 'Processing…';
 
-    const { token, error } = await stripe.createToken(cardElement, {
-      name: document.getElementById('cardName').value.trim()
-    });
-
-    if (error) {
-      const cardErr = document.getElementById('card-errors');
-      cardErr.textContent = error.message;
-      cardErr.style.display = 'block';
-      btn.disabled = false;
-      document.getElementById('submitLabel').textContent = 'Support Sergio Now';
-      return;
-    }
-
-    const payload = {
-      token:       token.id,
+    const basePayload = {
       firstName:   document.getElementById('firstName').value.trim(),
       lastName:    document.getElementById('lastName').value.trim(),
       email:       email,
@@ -913,6 +1016,25 @@ footer .footer-name { color: rgba(255,255,255,0.8); font-family: 'Playfair Displ
     };
 
     try {
+      let payload;
+
+      if (currentPaymentMethod === 'card') {
+        const { token, error } = await stripe.createToken(cardElement, {
+          name: document.getElementById('cardName').value.trim()
+        });
+        if (error) {
+          const cardErr = document.getElementById('card-errors');
+          cardErr.textContent = error.message;
+          cardErr.style.display = 'block';
+          btn.disabled = false;
+          document.getElementById('submitLabel').textContent = 'Support Sergio Now';
+          return;
+        }
+        payload = { ...basePayload, token: token.id, paymentMethod: 'card' };
+      } else {
+        payload = { ...basePayload, bankAccountId: connectedBankAccountId, paymentMethod: 'bank' };
+      }
+
       const res = await fetch(WORKER_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
