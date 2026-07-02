@@ -648,16 +648,16 @@ footer .footer-name { color: rgba(255,255,255,0.8); font-family: 'Playfair Displ
   <!-- PAYMENT -->
   <div class="card">
     <p class="card-title">Payment Information</p>
-    <p class="card-subtitle">Encrypted and secure.</p>
+    <p class="card-subtitle">Encrypted and secure.<br><span style="font-size:0.78rem;">Side note: <strong style="text-transform:uppercase;">bank transfers</strong> <strong>has lower fees</strong>, so more of your gift goes directly to me.</span></p>
 
     <!-- PAYMENT METHOD TOGGLE -->
-    <div style="display:flex; margin-bottom:1.25rem; border:1px solid var(--border); border-radius:var(--radius); overflow:hidden; width:fit-content;">
-      <button id="tabCard" onclick="setPaymentMethod('card')" style="padding:0.5rem 1.1rem; font-size:0.8rem; font-weight:700; letter-spacing:0.05em; text-transform:uppercase; cursor:pointer; border:none; background:var(--navy); color:#fff; transition:background 0.2s, color 0.2s;">💳 Card</button>
-      <button id="tabBank" onclick="setPaymentMethod('bank')" style="padding:0.5rem 1.1rem; font-size:0.8rem; font-weight:700; letter-spacing:0.05em; text-transform:uppercase; cursor:pointer; border:none; background:transparent; color:var(--text-muted); border-left:1px solid var(--border); transition:background 0.2s, color 0.2s;">🏦 Bank Transfer</button>
+    <div style="display:flex; margin-bottom:0.75rem; border:1px solid var(--border); border-radius:var(--radius); overflow:hidden; width:fit-content;">
+      <button id="tabCard" onclick="setPaymentMethod('card')" style="padding:0.5rem 1.1rem; font-size:0.8rem; font-weight:700; letter-spacing:0.05em; text-transform:uppercase; cursor:pointer; border:none; background:transparent; color:var(--text-muted); transition:background 0.2s, color 0.2s;">Card</button>
+      <button id="tabBank" onclick="setPaymentMethod('bank')" style="padding:0.5rem 1.1rem; font-size:0.8rem; font-weight:700; letter-spacing:0.05em; text-transform:uppercase; cursor:pointer; border:none; background:var(--navy); color:#fff; border-left:1px solid var(--border); transition:background 0.2s, color 0.2s;">Bank Transfer <span style="background:var(--gold); color:var(--navy); font-size:0.6rem; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; padding:2px 6px; border-radius:10px; margin-left:5px; vertical-align:middle;">Recommended</span></button>
     </div>
 
     <!-- CARD FIELDS -->
-    <div id="cardFields">
+    <div id="cardFields" style="display:none;">
       <div class="form-grid">
         <div class="form-group full">
           <label for="cardName">Name on Card <span style="color:var(--error)">*</span></label>
@@ -672,7 +672,7 @@ footer .footer-name { color: rgba(255,255,255,0.8); font-family: 'Playfair Displ
     </div>
 
     <!-- BANK TRANSFER FIELDS -->
-    <div id="bankFields" style="display:none;">
+    <div id="bankFields">
       <p style="font-size:0.88rem; color:var(--text-mid); line-height:1.6; margin-bottom:1.25rem;">Click the button below to securely connect your bank account. You'll be prompted to log into your bank — no routing numbers needed.</p>
       <button id="bankConnectBtn" onclick="connectBank()" style="background:var(--navy); color:#fff; border:none; padding:0.75rem 1.5rem; font-size:0.88rem; font-family:'Lato',sans-serif; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; border-radius:var(--radius); cursor:pointer; display:inline-flex; align-items:center; gap:8px; position:relative; overflow:hidden;">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
@@ -721,17 +721,11 @@ footer .footer-name { color: rgba(255,255,255,0.8); font-family: 'Playfair Displ
   </div>
 
   <!-- SUBMIT -->
-  <div class="card" style="padding:1.75rem 2.25rem; text-align:center;">
+  <div style="text-align:center; padding:0.5rem 0 1rem;">
     <div id="errorMsg" style="display:none; background:#fef2f2; border:1px solid #f5c6cb; border-radius:var(--radius); padding:0.75rem 1rem; color:var(--error); font-size:0.88rem; margin-bottom:1.25rem; text-align:left;"></div>
-    <div class="submit-area">
-      <button class="submit-btn" onclick="showConfirmation()">
-        <span id="submitLabel">Continue</span>
-      </button>
-      <div class="submit-note">
-        <svg class="lock-icon" viewBox="0 0 12 14" fill="none"><rect x="2" y="6" width="8" height="7" rx="1.5" stroke="currentColor" stroke-width="1.2"/><path d="M4 6V4a2 2 0 014 0v2" stroke="currentColor" stroke-width="1.2"/></svg>
-        Secured with 256-bit SSL encryption
-      </div>
-    </div>
+    <button class="submit-btn" onclick="showConfirmation()">
+      <span id="submitLabel">Continue</span>
+    </button>
   </div>
 
 </div>
@@ -789,10 +783,6 @@ footer .footer-name { color: rgba(255,255,255,0.8); font-family: 'Playfair Displ
         <span style="position:absolute; bottom:0; left:0; right:0; height:3px; background:var(--gold);"></span>
       </button>
     </div>
-    <div class="submit-note" style="justify-content:center; margin-top:0.75rem;">
-      <svg class="lock-icon" viewBox="0 0 12 14" fill="none"><rect x="2" y="6" width="8" height="7" rx="1.5" stroke="currentColor" stroke-width="1.2"/><path d="M4 6V4a2 2 0 014 0v2" stroke="currentColor" stroke-width="1.2"/></svg>
-      Secured with 256-bit SSL encryption
-    </div>
   </div>
 </div>
 
@@ -834,7 +824,7 @@ footer .footer-name { color: rgba(255,255,255,0.8); font-family: 'Playfair Displ
 
   // ── STRIPE SETUP ──
   let stripe, cardElement;
-  let currentPaymentMethod = 'card';
+  let currentPaymentMethod = 'bank';
   let connectedBankAccountId = null;
   let connectedBankName = null;
   let connectedCustomerId = null;
