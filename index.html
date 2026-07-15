@@ -1184,10 +1184,11 @@ footer .footer-name { color: rgba(255,255,255,0.8); font-family: 'Playfair Displ
   function showSuccess() {
     document.getElementById('confirmationScreen').style.display = 'none';
     const container = document.querySelector('.page-container');
+    // Hide all children except the success banner
+    Array.from(container.children).forEach(el => {
+      if (el.id !== 'successBanner') el.style.display = 'none';
+    });
     container.style.display = '';
-    // Hide all cards except the success banner
-    document.querySelectorAll('.page-container > .card, .page-container > .impact-grid, .page-container > .quote-card').forEach(el => el.style.display = 'none');
-    document.getElementById('formArea').style.display = 'none';
     const banner = document.getElementById('successBanner');
     banner.classList.add('visible');
     banner.style.display = 'block';
