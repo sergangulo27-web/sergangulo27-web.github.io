@@ -794,7 +794,7 @@ footer .footer-name { color: rgba(255,255,255,0.8); font-family: 'Playfair Displ
 
 <script>
   const WORKER_URL = 'https://sergio-donations-backend.sergio28.workers.dev/';
-  const STATS_URL  = 'https://script.google.com/macros/s/AKfycbw9jkhcJejcO5RvbV24uZHY918EdnV_5mGsbMjTLWFFCCoWfpErcAyq84bG74UM7NTpug/exec';
+  const STATS_URL  = 'https://script.google.com/macros/s/AKfycbz6Jqnpln1eLi8rLlIn6HZbfXDMYRYu5jK6ne4mXIpiZaEA7LUZ-ri4mf7I1bY0TZmUhg/exec';
 
   // ── HAMBURGER MENU ──
   function toggleMenu() {
@@ -1183,6 +1183,11 @@ footer .footer-name { color: rgba(255,255,255,0.8); font-family: 'Playfair Displ
 
   function showSuccess() {
     document.getElementById('confirmationScreen').style.display = 'none';
+    const container = document.querySelector('.page-container');
+    container.style.display = '';
+    // Hide all cards except the success banner
+    document.querySelectorAll('.page-container > .card, .page-container > .impact-grid, .page-container > .quote-card').forEach(el => el.style.display = 'none');
+    document.getElementById('formArea').style.display = 'none';
     const banner = document.getElementById('successBanner');
     banner.classList.add('visible');
     banner.style.display = 'block';
