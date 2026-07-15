@@ -430,6 +430,7 @@ footer .footer-name { color: rgba(255,255,255,0.8); font-family: 'Playfair Displ
   .card { padding: 1.5rem 1.25rem; }
   .amount-grid { grid-template-columns: repeat(2, 1fr); }
   .progress-strip { padding: 1rem 1.25rem; }
+  #confirmationScreen { margin: 1rem auto; padding: 0 1rem 3rem; }
 }
 </style>
 </head>
@@ -498,11 +499,14 @@ footer .footer-name { color: rgba(255,255,255,0.8); font-family: 'Playfair Displ
 
   <!-- SUCCESS BANNER -->
   <div class="success-banner" id="successBanner">
-    <div class="success-cross">✝</div>
+    <div class="success-cross" style="font-size:2.5rem; margin-bottom:0.75rem;">
+      <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#1a6b3a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+    </div>
     <h2>God bless your generosity!</h2>
     <p>Your support makes it possible for me to be present with those who need it most.<br>
     A confirmation note will be sent to your email.<br><br>
     <em style="color:#1a6b3a; font-family:'Playfair Display',serif;">"Thank you for joining this mission with me!"</em></p>
+    <p id="subscriptionNote" style="display:none; margin-top:1rem; font-size:0.82rem; color:#2e6b45;">To manage or cancel your recurring donation, email <a href="mailto:sergio28@christinthecity.org" style="color:#1a6b3a; font-weight:700;">sergio28@christinthecity.org</a>.</p>
   </div>
 
   <!-- PULL QUOTE -->
@@ -1142,17 +1146,74 @@ footer .footer-name { color: rgba(255,255,255,0.8); font-family: 'Playfair Displ
       let payload;
 
       if (currentPaymentMethod === 'card') {
-        const { token, error } = await stripe.createToken(cardElement, {
-          name: document.getElementById('cardName').value.trim()
-        });
-        if (error) {
-          errEl.innerHTML = '• ' + error.message;
-          errEl.style.display = 'block';
-          confirmBtn.disabled = false;
-          document.getElementById('confirmSubmitLabel').textContent = 'Confirm & Give';
-          return;
+
+        if (currentFreq === 'once') {
+          // ── ONE-TIME CARD: PaymentIntent flow ──
+          // Step 1: Create PaymentIntent on server
+          const piRes = await fetch(WORKER_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ ...basePayload, action: 'create_payment_intent', paymentMethod: 'card' })
+          });
+          const piData = await piRes.json();
+          if (piData.error) throw new Error(piData.error);
+
+          // Step 2: Confirm PaymentIntent client-side (handles 3D Secure automatically)
+          const { paymentIntent, error } = await stripe.confirmCardPayment(piData.clientSecret, {
+            payment_method: {
+              card: cardElement,
+              billing_details: {
+                name: document.getElementById('cardName').value.trim(),
+                email: email
+              }
+            }
+          });
+
+          if (error) {
+            errEl.innerHTML = '• ' + error.message;
+            errEl.style.display = 'block';
+            confirmBtn.disabled = false;
+            document.getElementById('confirmSubmitLabel').textContent = 'Confirm & Give';
+            return;
+          }
+
+          // Step 3: Notify server to log to sheet and send emails
+          payload = { ...basePayload, paymentIntentId: paymentIntent.id, paymentMethod: 'card' };
+
+        } else {
+          // ── RECURRING CARD: SetupIntent flow ──
+          // Step 1: Create SetupIntent on server
+          const siRes = await fetch(WORKER_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ ...basePayload, action: 'create_setup_intent', paymentMethod: 'card' })
+          });
+          const siData = await siRes.json();
+          if (siData.error) throw new Error(siData.error);
+
+          // Step 2: Confirm SetupIntent client-side (handles 3D Secure automatically)
+          const { setupIntent, error } = await stripe.confirmCardSetup(siData.clientSecret, {
+            payment_method: {
+              card: cardElement,
+              billing_details: {
+                name: document.getElementById('cardName').value.trim(),
+                email: email
+              }
+            }
+          });
+
+          if (error) {
+            errEl.innerHTML = '• ' + error.message;
+            errEl.style.display = 'block';
+            confirmBtn.disabled = false;
+            document.getElementById('confirmSubmitLabel').textContent = 'Confirm & Give';
+            return;
+          }
+
+          // Step 3: Create subscription with confirmed payment method
+          payload = { ...basePayload, setupIntentId: setupIntent.id, paymentMethodId: setupIntent.payment_method, customerId: siData.customerId, paymentMethod: 'card' };
         }
-        payload = { ...basePayload, token: token.id, paymentMethod: 'card' };
+
       } else {
         payload = { ...basePayload, bankAccountId: connectedBankAccountId, customerId: connectedCustomerId, paymentMethod: 'bank' };
       }
@@ -1192,6 +1253,10 @@ footer .footer-name { color: rgba(255,255,255,0.8); font-family: 'Playfair Displ
     const banner = document.getElementById('successBanner');
     banner.classList.add('visible');
     banner.style.display = 'block';
+    // Show subscription management note for recurring donations
+    if (currentFreq !== 'once') {
+      document.getElementById('subscriptionNote').style.display = 'block';
+    }
     window.scrollTo({ top: 0, behavior: 'smooth' });
     loadProgress();
   }
