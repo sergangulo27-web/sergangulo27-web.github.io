@@ -1,0 +1,1237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Support Sergio Angulo — Christ in the City</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+<script src="https://js.stripe.com/v3/"></script>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --navy: #1a2744;
+  --navy-mid: #243354;
+  --gold: #c8973a;
+  --gold-light: #e8b95a;
+  --cream: #faf7f2;
+  --warm-white: #fffdf9;
+  --text-dark: #1c1c1c;
+  --text-mid: #4a4a4a;
+  --text-muted: #7a7a7a;
+  --border: #e2d9cc;
+  --error: #c0392b;
+  --success: #1a6b3a;
+  --radius: 6px;
+  --shadow: 0 2px 16px rgba(26,39,68,0.10);
+}
+
+html { font-family: 'Lato', sans-serif; background: var(--cream); color: var(--text-dark); font-size: 16px; }
+
+/* ── HEADER ── */
+header {
+  background: var(--navy);
+  padding: 0 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 68px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  border-bottom: 3px solid var(--gold);
+}
+.logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+.logo-icon {
+  width: 40px; height: 40px; border-radius: 50%;
+  border: 2px solid var(--gold);
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(200,151,58,0.15);
+}
+.logo-text { color: #fff; font-family: 'Playfair Display', serif; font-size: 1rem; line-height: 1.2; font-weight: 400; }
+.logo-text span { display: block; font-size: 0.65rem; color: var(--gold-light); font-family: 'Lato', sans-serif; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 300; }
+nav { display: flex; gap: 1.5rem; }
+nav a { color: rgba(255,255,255,0.7); text-decoration: none; font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 700; transition: color 0.2s; }
+nav a:hover, nav a.active { color: var(--gold-light); }
+
+/* ── HAMBURGER MENU ── */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 36px; height: 36px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  z-index: 200;
+}
+.hamburger span {
+  display: block;
+  width: 100%;
+  height: 2px;
+  background: rgba(255,255,255,0.85);
+  border-radius: 2px;
+  transition: transform 0.28s ease, opacity 0.2s ease;
+  transform-origin: center;
+}
+.hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+.hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+.mobile-nav {
+  display: none;
+  position: fixed;
+  top: 68px; left: 0; right: 0;
+  background: var(--navy-mid);
+  border-bottom: 3px solid var(--gold);
+  z-index: 99;
+  flex-direction: column;
+  padding: 0.5rem 0 0.75rem;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+}
+.mobile-nav.open { display: flex; }
+.mobile-nav a {
+  color: rgba(255,255,255,0.75);
+  text-decoration: none;
+  font-size: 0.82rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 700;
+  padding: 0.85rem 2rem;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+  transition: color 0.2s, background 0.2s;
+}
+.mobile-nav a:last-child { border-bottom: none; }
+.mobile-nav a:hover, .mobile-nav a.active {
+  color: var(--gold-light);
+  background: rgba(200,151,58,0.08);
+}
+
+/* ── MISSIONARY HERO ── */
+.missionary-hero {
+  background: var(--navy);
+  position: relative;
+  overflow: hidden;
+  padding: 3rem 2rem 0;
+}
+.missionary-hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image: url("images/Denver_skyline_small.jpeg");
+  background-size: cover;
+  background-position: center 40%;
+  opacity: 0.22;
+}
+.hero-inner {
+  max-width: 820px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 2rem;
+  align-items: end;
+  position: relative;
+}
+.profile-photo-wrap {
+  position: relative;
+  align-self: flex-end;
+}
+.profile-photo {
+  width: 148px;
+  height: 180px;
+  border-radius: 10px 10px 0 0;
+  background: linear-gradient(160deg, #2d4a7a 0%, #1a2f5a 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid rgba(200,151,58,0.4);
+  border-bottom: none;
+  overflow: hidden;
+}
+.profile-photo svg { opacity: 0.35; }
+.profile-photo-label {
+  font-size: 0.6rem;
+  color: rgba(255,255,255,0.4);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-top: 8px;
+}
+.profile-badge {
+  position: absolute;
+  top: -10px; right: -10px;
+  background: var(--gold);
+  color: var(--navy);
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 20px;
+}
+.hero-text { padding-bottom: 2.25rem; color: #fff; }
+.hero-eyebrow {
+  font-size: 0.68rem; letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--gold-light); font-weight: 700; margin-bottom: 0.6rem;
+  display: flex; align-items: center; gap: 8px;
+}
+.hero-eyebrow::before { content: ''; display: inline-block; width: 20px; height: 1px; background: var(--gold); }
+.hero-text h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.2rem; font-weight: 400; line-height: 1.15;
+  margin-bottom: 0.5rem;
+}
+.hero-text h1 em { font-style: italic; color: var(--gold-light); }
+.hero-text .role {
+  font-size: 0.8rem; color: rgba(255,255,255,0.55);
+  letter-spacing: 0.1em; text-transform: uppercase; font-weight: 700;
+  margin-bottom: 1rem;
+}
+.hero-text p {
+  font-size: 0.95rem; color: rgba(255,255,255,0.75);
+  line-height: 1.75; font-weight: 300; max-width: 500px;
+}
+
+/* ── FUNDING PROGRESS BAR ── */
+.progress-strip {
+  background: rgba(0,0,0,0.25);
+  border-top: 1px solid rgba(200,151,58,0.2);
+  padding: 1.1rem 2rem;
+}
+.progress-inner { max-width: 820px; margin: 0 auto; }
+.progress-meta {
+  display: flex; justify-content: space-between; align-items: baseline;
+  margin-bottom: 0.55rem;
+}
+.progress-raised { font-size: 1.4rem; font-family: 'Playfair Display', serif; color: #fff; font-weight: 600; }
+.progress-raised span { font-size: 0.78rem; color: rgba(255,255,255,0.45); font-family: 'Lato', sans-serif; font-weight: 300; margin-left: 4px; }
+.progress-goal { font-size: 0.78rem; color: rgba(255,255,255,0.5); }
+.progress-goal strong { color: rgba(255,255,255,0.8); }
+.progress-bar-track { height: 7px; background: rgba(255,255,255,0.12); border-radius: 10px; overflow: hidden; }
+.progress-bar-fill {
+  height: 100%; width: 62%;
+  background: linear-gradient(90deg, var(--gold) 0%, var(--gold-light) 100%);
+  border-radius: 10px;
+  transition: width 1s ease;
+}
+.progress-supporters {
+  margin-top: 0.5rem; font-size: 0.75rem; color: rgba(255,255,255,0.4);
+  display: flex; align-items: center; gap: 6px;
+}
+.supporter-dots { display: flex; gap: -4px; }
+.supporter-dot {
+  width: 20px; height: 20px; border-radius: 50%;
+  border: 1.5px solid rgba(26,39,68,0.5);
+  font-size: 0.55rem; font-weight: 700; color: var(--navy);
+  display: flex; align-items: center; justify-content: center;
+  margin-left: -5px;
+}
+.supporter-dot:first-child { margin-left: 0; }
+.d1 { background: #e8c97a; }
+.d2 { background: #a8c4e0; }
+.d3 { background: #b8d4b0; }
+.d4 { background: #e8b0a0; }
+
+/* ── MAIN LAYOUT ── */
+.page-container {
+  max-width: 820px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 4rem;
+  display: grid;
+  gap: 1.5rem;
+}
+
+/* ── QUOTE/PULL CARD ── */
+.quote-card {
+  background: var(--navy);
+  border-radius: 10px;
+  padding: 1.75rem 2rem;
+  position: relative;
+  overflow: hidden;
+}
+.quote-card::before {
+  content: '\201C';
+  position: absolute; top: -10px; left: 16px;
+  font-family: 'Playfair Display', serif;
+  font-size: 7rem; line-height: 1;
+  color: rgba(200,151,58,0.15);
+  pointer-events: none;
+}
+.quote-card blockquote {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.15rem;
+  font-style: italic;
+  color: rgba(255,255,255,0.9);
+  line-height: 1.65;
+  position: relative;
+  padding-left: 1rem;
+  border-left: 3px solid var(--gold);
+  margin-bottom: 0.75rem;
+}
+.quote-attribution { font-size: 0.78rem; color: var(--gold-light); letter-spacing: 0.08em; padding-left: 1rem; }
+
+/* ── IMPACT STATS ── */
+.impact-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+.impact-stat {
+  background: var(--warm-white);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1.25rem 1rem;
+  text-align: center;
+  box-shadow: var(--shadow);
+}
+.impact-number {
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem; font-weight: 600;
+  color: var(--navy); line-height: 1;
+  margin-bottom: 4px;
+}
+.impact-number em { color: var(--gold); font-style: normal; }
+.impact-label { font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.1em; line-height: 1.4; }
+
+/* ── CARD ── */
+.card {
+  background: var(--warm-white);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 2rem 2.25rem;
+  box-shadow: var(--shadow);
+}
+.card-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.2rem; font-weight: 600;
+  color: var(--navy); margin-bottom: 0.25rem;
+}
+.card-subtitle { font-size: 0.82rem; color: var(--text-muted); margin-bottom: 1.5rem; line-height: 1.5; }
+.section-divider { border: none; border-top: 1px solid var(--border); margin: 1.5rem 0; }
+
+/* ── AMOUNT GRID ── */
+.freq-tabs {
+  display: flex; margin-bottom: 1.25rem;
+  border: 1px solid var(--border); border-radius: var(--radius);
+  overflow: hidden; width: fit-content;
+}
+.freq-tab {
+  padding: 0.5rem 1.1rem; font-size: 0.8rem; font-weight: 700;
+  letter-spacing: 0.05em; text-transform: uppercase;
+  cursor: pointer; border: none; background: transparent;
+  color: var(--text-muted); transition: background 0.2s, color 0.2s;
+}
+.freq-tab.active { background: var(--navy); color: #fff; }
+.freq-tab:not(:last-child) { border-right: 1px solid var(--border); }
+
+.amount-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 1.1rem; }
+.amount-btn {
+  padding: 0.85rem 0.5rem;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  background: #fff; cursor: pointer;
+  font-size: 1.05rem;
+  font-family: 'Playfair Display', serif;
+  color: var(--navy); font-weight: 600;
+  transition: all 0.15s; text-align: center;
+}
+.amount-btn:hover { border-color: var(--gold); background: #fffbf3; }
+.amount-btn.selected { border-color: var(--gold); background: #fffbf3; box-shadow: 0 0 0 2px rgba(200,151,58,0.35); }
+.amount-btn small { display: block; font-family: 'Lato', sans-serif; font-size: 0.67rem; font-weight: 400; color: var(--text-muted); margin-top: 3px; text-transform: uppercase; letter-spacing: 0.06em; }
+
+.other-amount-row { display: flex; align-items: center; gap: 10px; margin-top: 0.25rem; }
+.other-amount-row label { font-size: 0.85rem; color: var(--text-mid); white-space: nowrap; }
+.currency-input { position: relative; flex: 1; }
+.currency-input span { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 0.9rem; pointer-events: none; }
+.currency-input input { padding-left: 32px; }
+
+/* ── TOGGLE SWITCH ── */
+.toggle-switch { position: relative; display: inline-block; width: 40px; height: 22px; flex-shrink: 0; }
+.toggle-switch input { opacity: 0; width: 0; height: 0; }
+.toggle-slider { position: absolute; cursor: pointer; inset: 0; background: #d0ccc5; border-radius: 22px; transition: 0.3s; }
+.toggle-slider::before { content: ''; position: absolute; height: 16px; width: 16px; left: 3px; bottom: 3px; background: white; border-radius: 50%; transition: 0.3s; }
+input:checked + .toggle-slider { background: var(--navy); }
+input:checked + .toggle-slider::before { transform: translateX(18px); }
+
+/* ── FORM FIELDS ── */
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem 1.25rem; }
+.form-group { display: flex; flex-direction: column; gap: 5px; }
+.form-group.full { grid-column: 1 / -1; }
+label { font-size: 0.78rem; font-weight: 700; color: var(--text-mid); letter-spacing: 0.04em; text-transform: uppercase; }
+input[type=text], input[type=email], input[type=tel], input[type=number], select, textarea {
+  padding: 0.6rem 0.85rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font-size: 0.92rem; font-family: 'Lato', sans-serif;
+  color: var(--text-dark); background: #fff;
+  transition: border-color 0.2s; width: 100%;
+  -webkit-appearance: none;
+}
+input:focus, select:focus, textarea:focus { outline: none; border-color: var(--gold); box-shadow: 0 0 0 3px rgba(200,151,58,0.15); }
+select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%237a7a7a' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 10px center; padding-right: 2rem;
+}
+.radio-group { display: flex; flex-direction: column; gap: 7px; }
+.radio-group label { display: flex; align-items: center; gap: 9px; font-size: 0.88rem; font-weight: 400; text-transform: none; letter-spacing: 0; color: var(--text-mid); cursor: pointer; }
+.radio-group input[type=radio] { width: 16px; height: 16px; accent-color: var(--gold); cursor: pointer; flex-shrink: 0; }
+.inline-radio { flex-direction: row; flex-wrap: wrap; }
+
+/* ── NOTE FIELD ── */
+.note-row { margin-top: 1.25rem; }
+.note-row label { margin-bottom: 5px; display: block; }
+
+/* ── DEDICATION ── */
+.dedication-panel { margin-top: 1rem; display: none; }
+.dedication-panel.visible { display: block; }
+
+/* ── SUBMIT ── */
+.submit-area { text-align: center; }
+.submit-btn {
+  background: var(--navy); color: #fff; border: none;
+  padding: 1rem 3rem; font-size: 0.95rem;
+  font-family: 'Lato', sans-serif; font-weight: 700;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  border-radius: var(--radius); cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+  width: 100%; max-width: 360px;
+  position: relative; overflow: hidden;
+}
+.submit-btn::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: var(--gold); }
+.submit-btn:hover { background: #243354; }
+.submit-btn:active { transform: scale(0.99); }
+.submit-note { margin-top: 0.75rem; font-size: 0.78rem; color: var(--text-muted); display: flex; align-items: center; justify-content: center; gap: 6px; }
+.lock-icon { width: 12px; height: 12px; }
+
+/* ── SUCCESS BANNER ── */
+.success-banner { display: none; background: #f0faf4; border: 1px solid #a3d4b5; border-radius: 10px; padding: 2.5rem 2rem; text-align: center; }
+.success-banner.visible { display: block; }
+.success-banner .success-cross { font-size: 2.5rem; margin-bottom: 0.75rem; }
+.success-banner h2 { font-family: 'Playfair Display', serif; color: var(--success); margin-bottom: 0.5rem; font-size: 1.7rem; }
+.success-banner p { color: #2e6b45; font-size: 0.9rem; line-height: 1.6; }
+
+/* ── FOOTER ── */
+footer { background: var(--navy); color: rgba(255,255,255,0.5); text-align: center; padding: 1.5rem; font-size: 0.78rem; }
+footer a { color: var(--gold-light); text-decoration: none; }
+footer .footer-name { color: rgba(255,255,255,0.8); font-family: 'Playfair Display', serif; font-size: 0.95rem; margin-bottom: 4px; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 620px) {
+  .hero-inner { grid-template-columns: 1fr; }
+  .profile-photo-wrap { display: none; }
+  .hero-text { padding-bottom: 1.75rem; }
+  .hero-text h1 { font-size: 1.75rem; }
+  .impact-grid { grid-template-columns: repeat(2, 1fr); }
+  .form-grid { grid-template-columns: 1fr; }
+  .form-group.full { grid-column: 1; }
+  nav { display: none !important; }
+  .hamburger { display: flex; }
+  .card { padding: 1.5rem 1.25rem; }
+  .amount-grid { grid-template-columns: repeat(2, 1fr); }
+  .progress-strip { padding: 1rem 1.25rem; }
+  #confirmationScreen { margin: 1rem auto; padding: 0 1rem 3rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <a class="logo" href="index.html">
+    <div class="logo-icon" style="overflow:hidden; padding:0;">
+      <img src="images/Sergio_Angulo_copy.jpeg" alt="Sergio Angulo" style="width:100%; height:100%; object-fit:cover; object-position: center 15%;">
+    </div>
+    <div class="logo-text">Sergio Angulo <span>Christ in the City</span></div>
+  </a>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="story.html">My Story</a>
+    <a href="support.html" class="active">Support</a>
+    <a href="contact.html">Contact</a>
+  </nav>
+  <button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </button>
+</header>
+
+<!-- MOBILE NAV -->
+<div class="mobile-nav" id="mobileNav">
+  <a href="index.html">Home</a>
+  <a href="story.html">My Story</a>
+  <a href="support.html" class="active">Support</a>
+  <a href="contact.html">Contact</a>
+</div>
+
+<!-- MISSIONARY HERO -->
+<div class="missionary-hero">
+  <div class="hero-inner">
+    <div class="profile-photo-wrap">
+      <div class="profile-badge">Incoming Missionary</div>
+      <div class="profile-photo" style="background:none; overflow:hidden; padding:0;">
+        <img src="images/Sergio_Angulo_copy.jpeg" alt="Sergio Angulo" style="width:100%; height:100%; object-fit:cover; object-position: center 15%;">
+      </div>
+    </div>
+    <div class="hero-text">
+      <div class="hero-eyebrow">Support my Mission</div>
+      <h1>Walk Alongside<br><em>Sergio Angulo</em></h1>
+      <div class="role">Christ in the City · Year 1 Missionary · Denver, CO</div>
+      <p>Join me on this journey as I step into the streets of downtown Denver to sit with those society has forgotten — not to fix them, but to know them. Your support sends me back out tomorrow.</p>
+    </div>
+  </div>
+  <div class="progress-strip">
+    <div class="progress-inner">
+      <div class="progress-meta">
+        <div class="progress-raised">— <span>raised this year</span></div>
+        <div class="progress-goal">Goal: <strong>—</strong></div>
+      </div>
+      <div class="progress-bar-track">
+        <div class="progress-bar-fill" id="progressFill" style="width:0%"></div>
+      </div>
+      <div class="progress-supporters">
+        <div class="supporter-dots"></div>
+        <span id="supporterText">Loading…</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE CONTENT -->
+<div class="page-container">
+
+  <!-- SUCCESS BANNER -->
+  <div class="success-banner" id="successBanner">
+    <div class="success-cross" style="font-size:2.5rem; margin-bottom:0.75rem;">
+      <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#1a6b3a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+    </div>
+    <h2>God bless your generosity!</h2>
+    <p>Your support makes it possible for me to be present with those who need it most.<br>
+    A confirmation note will be sent to your email.<br><br>
+    <em style="color:#1a6b3a; font-family:'Playfair Display',serif;">"Thank you for joining this mission with me!"</em></p>
+    <p id="subscriptionNote" style="display:none; margin-top:1rem; font-size:0.82rem; color:#2e6b45;">To manage or cancel your recurring donation, email <a href="mailto:sergio28@christinthecity.org" style="color:#1a6b3a; font-weight:700;">sergio28@christinthecity.org</a>.</p>
+  </div>
+
+  <!-- GIFT AMOUNT -->
+  <div class="card">
+    <p class="card-title">Choose Your Gift</p>
+    <p class="card-subtitle">Your support will make it possible for me to serve in Denver and build relationships with those who are too often forgotten and invisible to the rest of the world.</p>
+    <p class="card-subtitle"><strong>*Note: This gift is not eligible for tax-exemptions*</strong></p>
+
+    <div class="freq-tabs">
+      <button class="freq-tab active" onclick="setFreq('once', this)">One Time</button>
+      <button class="freq-tab" onclick="setFreq('monthly', this)">Monthly</button>
+      <button class="freq-tab" onclick="setFreq('annual', this)">Annual</button>
+    </div>
+
+    <div id="amountsOnce">
+      <div class="amount-grid">
+        <button class="amount-btn" onclick="selectAmount(this, 25)">$25</button>
+        <button class="amount-btn selected" onclick="selectAmount(this, 50)">$50</button>
+        <button class="amount-btn" onclick="selectAmount(this, 100)">$100</button>
+        <button class="amount-btn" onclick="selectAmount(this, 250)">$250</button>
+        <button class="amount-btn" onclick="selectAmount(this, 500)">$500</button>
+        <button class="amount-btn" onclick="selectAmount(this, 1000)">$1,000</button>
+      </div>
+    </div>
+
+    <div id="amountsMonthly" style="display:none">
+      <div class="amount-grid">
+        <button class="amount-btn" onclick="selectAmount(this, 10)">$10<small>/month</small></button>
+        <button class="amount-btn selected" onclick="selectAmount(this, 25)">$25<small>/month</small></button>
+        <button class="amount-btn" onclick="selectAmount(this, 50)">$50<small>/month</small></button>
+        <button class="amount-btn" onclick="selectAmount(this, 100)">$100<small>/month</small></button>
+        <button class="amount-btn" onclick="selectAmount(this, 200)">$200<small>/month</small></button>
+        <button class="amount-btn" onclick="selectAmount(this, 500)">$500<small>/month</small></button>
+      </div>
+    </div>
+
+    <div id="amountsAnnual" style="display:none">
+      <div class="amount-grid">
+        <button class="amount-btn" onclick="selectAmount(this, 60)">$60<small>/year</small></button>
+        <button class="amount-btn selected" onclick="selectAmount(this, 150)">$150<small>/year</small></button>
+        <button class="amount-btn" onclick="selectAmount(this, 300)">$300<small>/year</small></button>
+        <button class="amount-btn" onclick="selectAmount(this, 600)">$600<small>/year</small></button>
+        <button class="amount-btn" onclick="selectAmount(this, 1200)">$1,200<small>/year</small></button>
+        <button class="amount-btn" onclick="selectAmount(this, 2500)">$2,500<small>/year</small></button>
+      </div>
+    </div>
+
+    <div class="other-amount-row">
+      <label for="otherAmt">Other amount:</label>
+      <div class="currency-input">
+        <span>$</span>
+        <input type="number" id="otherAmt" placeholder="Enter amount" min="1" oninput="clearSelectedAmounts()" style="padding-left: 28px;">
+      </div>
+    </div>
+
+    <div class="note-row">
+      <label for="donorNote">Leave a personal note for Sergio (optional)</label>
+      <textarea id="donorNote" rows="2" placeholder="e.g. Praying for you and your work every day…" style="resize:vertical; margin-top:5px; width:100%; padding:0.6rem 0.85rem; border:1px solid var(--border); border-radius:var(--radius); font-family:'Lato',sans-serif; font-size:0.92rem; color:var(--text-dark); background:#fff; transition:border-color 0.2s;"></textarea>
+    </div>
+  </div>
+
+  <!-- CONTACT INFO -->
+  <div class="card">
+    <p class="card-title">Your Information</p>
+    <p class="card-subtitle">So I can thank you personally. Your details are kept private and never shared.</p>
+    <div class="form-grid">
+      <div class="form-group">
+        <label for="firstName">First Name <span style="color:var(--error)">*</span></label>
+        <input type="text" id="firstName" placeholder="Lightning">
+      </div>
+      <div class="form-group">
+        <label for="lastName">Last Name <span style="color:var(--error)">*</span></label>
+        <input type="text" id="lastName" placeholder="McQueen">
+      </div>
+      <div class="form-group full">
+        <label for="address">Street Address</label>
+        <input type="text" id="address" placeholder="Route 66">
+      </div>
+      <div class="form-group">
+        <label for="city">City</label>
+        <input type="text" id="city" placeholder="Radiator Springs">
+      </div>
+      <div class="form-group">
+        <label for="state">State</label>
+        <select id="state">
+          <option value="">Select…</option>
+          <option>Alabama</option><option>Alaska</option><option>Arizona</option><option>Arkansas</option>
+          <option>California</option><option selected>Colorado</option><option>Connecticut</option>
+          <option>Delaware</option><option>Florida</option><option>Georgia</option><option>Hawaii</option>
+          <option>Idaho</option><option>Illinois</option><option>Indiana</option><option>Iowa</option>
+          <option>Kansas</option><option>Kentucky</option><option>Louisiana</option><option>Maine</option>
+          <option>Maryland</option><option>Massachusetts</option><option>Michigan</option><option>Minnesota</option>
+          <option>Mississippi</option><option>Missouri</option><option>Montana</option><option>Nebraska</option>
+          <option>Nevada</option><option>New Hampshire</option><option>New Jersey</option><option>New Mexico</option>
+          <option>New York</option><option>North Carolina</option><option>North Dakota</option><option>Ohio</option>
+          <option>Oklahoma</option><option>Oregon</option><option>Pennsylvania</option><option>Rhode Island</option>
+          <option>South Carolina</option><option>South Dakota</option><option>Tennessee</option><option>Texas</option>
+          <option>Utah</option><option>Vermont</option><option>Virginia</option><option>Washington</option>
+          <option>West Virginia</option><option>Wisconsin</option><option>Wyoming</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="zip">ZIP Code</label>
+        <input type="text" id="zip" placeholder="12345" maxlength="10">
+      </div>
+      <div class="form-group">
+        <label for="country">Country</label>
+        <select id="country">
+          <option selected>United States</option>
+          <option>Canada</option>
+          <option>Other</option>
+        </select>
+      </div>
+      <div class="form-group full">
+        <label for="email">Email Address <span style="color:var(--error)">*</span></label>
+        <input type="email" id="email" placeholder="mcqueen.lightning@pistoncup.com">
+      </div>
+      <div class="form-group full">
+        <label for="phone">Phone Number</label>
+        <input type="tel" id="phone" placeholder="(555) 000-0000">
+      </div>
+    </div>
+  </div>
+
+  <!-- PAYMENT -->
+  <div class="card">
+    <p class="card-title">Payment Information</p>
+    <p class="card-subtitle">Encrypted and secure.<br><span style="font-size:0.78rem;">Side note: <strong style="text-transform:uppercase;">bank transfers</strong> <strong>has lower fees</strong>, so more of your gift goes directly to me.</span></p>
+
+    <!-- PAYMENT METHOD TOGGLE -->
+    <div style="display:flex; margin-bottom:0.75rem; border:1px solid var(--border); border-radius:var(--radius); overflow:hidden; width:fit-content;">
+      <button id="tabCard" onclick="setPaymentMethod('card')" style="padding:0.5rem 1.1rem; font-size:0.8rem; font-weight:700; letter-spacing:0.05em; text-transform:uppercase; cursor:pointer; border:none; background:transparent; color:var(--text-muted); transition:background 0.2s, color 0.2s;">Card</button>
+      <button id="tabBank" onclick="setPaymentMethod('bank')" style="padding:0.5rem 1.1rem; font-size:0.8rem; font-weight:700; letter-spacing:0.05em; text-transform:uppercase; cursor:pointer; border:none; background:var(--navy); color:#fff; border-left:1px solid var(--border); transition:background 0.2s, color 0.2s;">Bank Transfer <span style="background:var(--gold); color:var(--navy); font-size:0.6rem; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; padding:2px 6px; border-radius:10px; margin-left:5px; vertical-align:middle;">Recommended</span></button>
+    </div>
+
+    <!-- CARD FIELDS -->
+    <div id="cardFields" style="display:none;">
+      <div class="form-grid">
+        <div class="form-group full">
+          <label for="cardName">Name on Card <span style="color:var(--error)">*</span></label>
+          <input type="text" id="cardName" placeholder="Lightning McQueen">
+        </div>
+        <div class="form-group full">
+          <label>Card Details <span style="color:var(--error)">*</span></label>
+          <div id="card-element" style="padding: 0.65rem 0.85rem; border: 1px solid var(--border); border-radius: var(--radius); background: #fff; transition: border-color 0.2s;"></div>
+          <div id="card-errors" style="color: var(--error); font-size: 0.82rem; margin-top: 5px; display:none;"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BANK TRANSFER FIELDS -->
+    <div id="bankFields">
+      <p style="font-size:0.88rem; color:var(--text-mid); line-height:1.6; margin-bottom:1.25rem;">Click the button below to securely connect your bank account. You'll be prompted to log into your bank — no routing numbers needed.</p>
+      <button id="bankConnectBtn" onclick="connectBank()" style="background:var(--navy); color:#fff; border:none; padding:0.75rem 1.5rem; font-size:0.88rem; font-family:'Lato',sans-serif; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; border-radius:var(--radius); cursor:pointer; display:inline-flex; align-items:center; gap:8px; position:relative; overflow:hidden;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+        <span id="bankConnectLabel">Connect Bank Account</span>
+        <span style="position:absolute; bottom:0; left:0; right:0; height:3px; background:var(--gold);"></span>
+      </button>
+      <div id="bankConnected" style="display:none; margin-top:1rem; padding:0.85rem 1.1rem; background:rgba(26,39,68,0.06); border:1.5px solid var(--gold); border-radius:var(--radius); font-size:0.88rem; color:var(--navy); align-items:center; gap:10px;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          <span id="bankConnectedLabel" style="font-weight:700; letter-spacing:0.03em;">Bank account connected</span>
+      </div>
+      <div id="bank-errors" style="display:none; color:var(--error); font-size:0.82rem; margin-top:0.75rem;"></div>
+    </div>
+  </div>
+
+  <!-- DEDICATION -->
+  <div class="card">
+    <p class="card-title">Dedicate This Gift</p>
+    <p class="card-subtitle">Give in honor or memory of someone you love.</p>
+    <div style="display:flex; align-items:center; gap:10px;">
+      <label class="toggle-switch">
+        <input type="checkbox" id="dedicToggle" onchange="toggleDedication(this)">
+        <span class="toggle-slider"></span>
+      </label>
+      <span style="font-size:0.9rem; color:var(--text-mid);">I'd like to dedicate this gift to someone</span>
+    </div>
+    <div class="dedication-panel" id="dedicPanel">
+      <hr class="section-divider">
+      <div class="form-grid">
+        <div class="form-group full">
+          <label>Gift Type</label>
+          <div class="radio-group inline-radio">
+            <label><input type="radio" name="giftType" value="honor" checked> In Honor Of</label>
+            <label><input type="radio" name="giftType" value="memory"> In Memory Of</label>
+          </div>
+        </div>
+        <div class="form-group full">
+          <label for="honoree">Name of Honoree</label>
+          <input type="text" id="honoree" placeholder="Full name">
+        </div>
+        <div class="form-group full">
+          <label for="notifyEmail">Send acknowledgment to (email)</label>
+          <input type="email" id="notifyEmail" placeholder="recipient@example.com">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SUBMIT -->
+  <div style="text-align:center; padding:0.5rem 0 1rem;">
+    <div id="errorMsg" style="display:none; background:#fef2f2; border:1px solid #f5c6cb; border-radius:var(--radius); padding:0.75rem 1rem; color:var(--error); font-size:0.88rem; margin-bottom:1.25rem; text-align:left;"></div>
+    <button class="submit-btn" onclick="showConfirmation()">
+      <span id="submitLabel">Continue</span>
+    </button>
+  </div>
+
+</div>
+
+<!-- CONFIRMATION SCREEN -->
+<div id="confirmationScreen" style="display:none; max-width:820px; margin:2rem auto; padding:0 1.5rem 4rem;">
+  <div class="card">
+    <p class="card-title" style="margin-bottom:0.25rem;">Review Your Gift</p>
+    <p class="card-subtitle" style="margin-bottom:1.5rem;">Please confirm the details below before finalizing your donation.</p>
+
+    <div style="display:grid; gap:0.75rem;">
+
+      <div style="background:var(--cream); border-radius:8px; padding:1rem 1.25rem;">
+        <p style="font-size:0.7rem; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:var(--text-muted); margin-bottom:0.5rem;">Donor</p>
+        <p id="conf-name" style="font-size:0.95rem; color:var(--text-dark); font-weight:400;"></p>
+        <p id="conf-email" style="font-size:0.88rem; color:var(--text-muted); margin-top:2px;"></p>
+        <p id="conf-phone" style="font-size:0.88rem; color:var(--text-muted); margin-top:2px;"></p>
+        <p id="conf-address" style="font-size:0.88rem; color:var(--text-muted); margin-top:2px;"></p>
+      </div>
+
+      <div style="background:var(--cream); border-radius:8px; padding:1rem 1.25rem;">
+        <p style="font-size:0.7rem; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:var(--text-muted); margin-bottom:0.5rem;">Gift</p>
+        <p id="conf-amount" style="font-size:1.4rem; font-family:'Playfair Display',serif; font-weight:600; color:var(--navy);"></p>
+        <p id="conf-frequency" style="font-size:0.88rem; color:var(--text-muted); margin-top:2px;"></p>
+      </div>
+
+      <div style="background:var(--cream); border-radius:8px; padding:1rem 1.25rem;">
+        <p style="font-size:0.7rem; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:var(--text-muted); margin-bottom:0.5rem;">Payment Method</p>
+        <p id="conf-payment" style="font-size:0.95rem; color:var(--text-dark);"></p>
+      </div>
+
+      <div id="conf-note-row" style="display:none; background:var(--cream); border-radius:8px; padding:1rem 1.25rem;">
+        <p style="font-size:0.7rem; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:var(--text-muted); margin-bottom:0.5rem;">Personal Note</p>
+        <p id="conf-note" style="font-size:0.9rem; color:var(--text-mid); font-style:italic; line-height:1.6;"></p>
+      </div>
+
+      <div id="conf-dedication-row" style="display:none; background:var(--cream); border-radius:8px; padding:1rem 1.25rem;">
+        <p style="font-size:0.7rem; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:var(--text-muted); margin-bottom:0.5rem;">Dedication</p>
+        <p id="conf-dedication" style="font-size:0.95rem; color:var(--text-dark);"></p>
+        <p id="conf-dedication-notify" style="font-size:0.88rem; color:var(--text-muted); margin-top:2px;"></p>
+      </div>
+
+    </div>
+
+    <hr style="border:none; border-top:1px solid var(--border); margin:1.5rem 0;">
+
+    <div id="confirmErrorMsg" style="display:none; background:#fef2f2; border:1px solid #f5c6cb; border-radius:var(--radius); padding:0.75rem 1rem; color:var(--error); font-size:0.88rem; margin-bottom:1.25rem;"></div>
+
+    <div style="display:flex; gap:1rem; justify-content:center; flex-wrap:wrap;">
+      <button onclick="backToForm()" style="background:transparent; color:var(--text-mid); border:1.5px solid var(--border); padding:0.85rem 1.75rem; font-size:0.88rem; font-family:'Lato',sans-serif; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; border-radius:var(--radius); cursor:pointer; transition:all 0.2s;">
+        Back
+      </button>
+      <button onclick="submitDonation()" style="background:var(--navy); color:#fff; border:none; padding:0.85rem 2.5rem; font-size:0.88rem; font-family:'Lato',sans-serif; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; border-radius:var(--radius); cursor:pointer; position:relative; overflow:hidden; transition:background 0.2s;">
+        <span id="confirmSubmitLabel">Confirm &amp; Give</span>
+        <span style="position:absolute; bottom:0; left:0; right:0; height:3px; background:var(--gold);"></span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-name">Sergio Angulo · Christ in the City</div>
+  <p><a href="index.html">Home</a> · <a href="mailto:sergio28@christinthecity.org">Contact</a></p>
+</footer>
+
+<script>
+  const WORKER_URL = 'https://sergio-donations-backend.sergio28.workers.dev/';
+  const STATS_URL  = 'https://script.google.com/macros/s/AKfycbz6Jqnpln1eLi8rLlIn6HZbfXDMYRYu5jK6ne4mXIpiZaEA7LUZ-ri4mf7I1bY0TZmUhg/exec';
+
+  // ── HAMBURGER MENU ──
+  function toggleMenu() {
+    const btn = document.getElementById('hamburger');
+    const nav = document.getElementById('mobileNav');
+    const isOpen = nav.classList.toggle('open');
+    btn.classList.toggle('open', isOpen);
+    btn.setAttribute('aria-expanded', isOpen);
+  }
+
+  document.querySelectorAll('.mobile-nav a').forEach(link => {
+    link.addEventListener('click', () => {
+      document.getElementById('mobileNav').classList.remove('open');
+      document.getElementById('hamburger').classList.remove('open');
+    });
+  });
+
+  document.addEventListener('click', e => {
+    const nav = document.getElementById('mobileNav');
+    const btn = document.getElementById('hamburger');
+    if (nav.classList.contains('open') && !nav.contains(e.target) && !btn.contains(e.target)) {
+      nav.classList.remove('open');
+      btn.classList.remove('open');
+      btn.setAttribute('aria-expanded', false);
+    }
+  });
+
+  // ── STRIPE SETUP ──
+  let stripe, cardElement;
+  let currentPaymentMethod = 'bank';
+  let connectedBankAccountId = null;
+  let connectedBankName = null;
+  let connectedCustomerId = null;
+
+  function initStripe() {
+    if (typeof Stripe === 'undefined') {
+      setTimeout(initStripe, 200);
+      return;
+    }
+    stripe = Stripe('pk_live_51Tf4M7Qo40d7O1Mq1B4bsu8uxvvjbzGcrjc2r042BBV6oMlTZ3t9DWsPwRn4ixFjlhAUZMQyvCW5aD4TT5QoLK0N00TnAMpWZU');
+    const elements = stripe.elements();
+    cardElement = elements.create('card', {
+      style: {
+        base: {
+          fontFamily: 'Lato, sans-serif',
+          fontSize: '15px',
+          color: '#1c1c1c',
+          '::placeholder': { color: '#aaa' }
+        },
+        invalid: { color: '#c0392b' }
+      }
+    });
+    cardElement.mount('#card-element');
+    cardElement.on('change', e => {
+      const errEl = document.getElementById('card-errors');
+      if (e.error) {
+        errEl.textContent = e.error.message;
+        errEl.style.display = 'block';
+      } else {
+        errEl.style.display = 'none';
+      }
+    });
+    loadProgress();
+  }
+
+  document.addEventListener('DOMContentLoaded', initStripe);
+
+  // ── PAYMENT METHOD TOGGLE ──
+  function setPaymentMethod(method) {
+    currentPaymentMethod = method;
+    const cardTab = document.getElementById('tabCard');
+    const bankTab = document.getElementById('tabBank');
+    const cardFields = document.getElementById('cardFields');
+    const bankFields = document.getElementById('bankFields');
+
+    if (method === 'card') {
+      cardTab.style.background = 'var(--navy)';
+      cardTab.style.color = '#fff';
+      bankTab.style.background = 'transparent';
+      bankTab.style.color = 'var(--text-muted)';
+      cardFields.style.display = '';
+      bankFields.style.display = 'none';
+    } else {
+      bankTab.style.background = 'var(--navy)';
+      bankTab.style.color = '#fff';
+      cardTab.style.background = 'transparent';
+      cardTab.style.color = 'var(--text-muted)';
+      cardFields.style.display = 'none';
+      bankFields.style.display = '';
+    }
+  }
+
+  // ── BANK CONNECT ──
+  async function connectBank() {
+    const errEl = document.getElementById('bank-errors');
+    errEl.style.display = 'none';
+    const btn = document.getElementById('bankConnectBtn');
+    document.getElementById('bankConnectLabel').textContent = 'Connecting…';
+    btn.disabled = true;
+
+    try {
+      // Request a Financial Connections session from the worker
+      const email = document.getElementById('email').value.trim();
+      const res = await fetch(WORKER_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'create_fc_session', email: email || 'donor@example.com' })
+      });
+      const data = await res.json();
+
+      if (data.error) throw new Error(data.error);
+
+      // Launch Stripe Financial Connections modal
+      const { financialConnectionsSession, error } = await stripe.collectFinancialConnectionsAccounts({
+        clientSecret: data.clientSecret
+      });
+
+      if (error) {
+        if (error.code === 'financial_connections_no_supported_payment_method_type') {
+          errEl.textContent = 'Your bank does not support instant verification. Please use a card instead.';
+        } else {
+          errEl.textContent = error.message || 'Bank connection failed. Please use a card instead.';
+        }
+        errEl.style.display = 'block';
+        document.getElementById('bankConnectLabel').textContent = 'Connect Bank Account';
+        btn.disabled = false;
+        return;
+      }
+
+      const account = financialConnectionsSession.accounts[0];
+      if (!account) {
+        errEl.textContent = 'No bank account was selected. Please try again or use a card.';
+        errEl.style.display = 'block';
+        document.getElementById('bankConnectLabel').textContent = 'Connect Bank Account';
+        btn.disabled = false;
+        return;
+      }
+
+      // Store the account ID for submission
+      connectedBankAccountId = account.id;
+      connectedBankName = account.display_name || account.institution_name || 'Bank account';
+      connectedCustomerId = data.customerId;
+
+      // Show success state
+      document.getElementById('bankConnected').style.display = 'flex';      document.getElementById('bankConnectedLabel').textContent = `${connectedBankName} connected`;
+      document.getElementById('bankConnectLabel').textContent = 'Change Bank Account';
+      btn.disabled = false;
+
+    } catch (err) {
+      errEl.textContent = 'Something went wrong. Please try again or use a card.';
+      errEl.style.display = 'block';
+      document.getElementById('bankConnectLabel').textContent = 'Connect Bank Account';
+      btn.disabled = false;
+    }
+  }
+
+  // ── FREQUENCY & AMOUNT ──
+  let currentFreq = 'once';
+  let selectedAmount = 50;
+
+  function setFreq(freq, btn) {
+    currentFreq = freq;
+    document.querySelectorAll('.freq-tab').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('amountsOnce').style.display = freq === 'once' ? '' : 'none';
+    document.getElementById('amountsMonthly').style.display = freq === 'monthly' ? '' : 'none';
+    document.getElementById('amountsAnnual').style.display = freq === 'annual' ? '' : 'none';
+    document.getElementById('otherAmt').value = '';
+    const cap = freq.charAt(0).toUpperCase() + freq.slice(1);
+    const first = document.querySelector(`#amounts${cap} .amount-btn.selected`);
+    if (first) selectedAmount = parseFloat(first.textContent.replace(/[^0-9.]/g, ''));
+  }
+
+  function selectAmount(btn, amt) {
+    document.querySelectorAll('.amount-btn').forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+    selectedAmount = amt;
+    document.getElementById('otherAmt').value = '';
+  }
+
+  function clearSelectedAmounts() {
+    document.querySelectorAll('.amount-btn').forEach(b => b.classList.remove('selected'));
+    selectedAmount = null;
+  }
+
+  function toggleDedication(chk) {
+    document.getElementById('dedicPanel').classList.toggle('visible', chk.checked);
+  }
+
+  function getAmount() {
+    const other = document.getElementById('otherAmt').value;
+    if (other && parseFloat(other) > 0) return parseFloat(other);
+    return selectedAmount;
+  }
+
+  // ── PROGRESS BAR ──
+  function loadProgress() {
+    const callbackName = 'statsCallback_' + Date.now();
+    const script = document.createElement('script');
+    window[callbackName] = function(d) {
+      document.querySelector('.progress-raised').innerHTML =
+        '$' + d.raised.toLocaleString() + ' <span>raised this year</span>';
+      document.querySelector('.progress-goal').innerHTML =
+        'Goal: <strong>$' + d.goal.toLocaleString() + '</strong>';
+      document.getElementById('progressFill').style.width = d.percent + '%';
+      document.getElementById('supporterText').innerHTML =
+        d.supporters + ' supporter' + (d.supporters !== 1 ? 's' : '') +
+        ' · ' + d.percent + '% funded · <strong style="color:rgba(255,255,255,0.65)">$' +
+        d.remaining.toLocaleString() + ' to go</strong>';
+      delete window[callbackName];
+      document.body.removeChild(script);
+    };
+    script.src = STATS_URL + '?callback=' + callbackName;
+    script.onerror = () => { delete window[callbackName]; document.body.removeChild(script); };
+    document.body.appendChild(script);
+  }
+
+  // ── CONFIRMATION SCREEN ──
+  function showConfirmation() {
+    const errEl = document.getElementById('errorMsg');
+    errEl.style.display = 'none';
+    const errors = [];
+
+    const firstName = document.getElementById('firstName').value.trim();
+    const lastName  = document.getElementById('lastName').value.trim();
+    const email     = document.getElementById('email').value.trim();
+
+    if (!firstName) errors.push('First name is required.');
+    if (!lastName)  errors.push('Last name is required.');
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) errors.push('A valid email address is required.');
+    if (!getAmount() || getAmount() < 1) errors.push('Please select or enter a gift amount.');
+    if (currentPaymentMethod === 'card' && !document.getElementById('cardName').value.trim()) errors.push('Name on card is required.');
+    if (currentPaymentMethod === 'bank' && !connectedBankAccountId) errors.push('Please connect your bank account before continuing.');
+
+    if (errors.length) {
+      errEl.innerHTML = errors.map(e => `• ${e}`).join('<br>');
+      errEl.style.display = 'block';
+      errEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+
+    // Populate confirmation fields
+    document.getElementById('conf-name').textContent = `${firstName} ${lastName}`;
+    document.getElementById('conf-email').textContent = email;
+
+    const phone = document.getElementById('phone').value.trim();
+    document.getElementById('conf-phone').textContent = phone || '';
+    document.getElementById('conf-phone').style.display = phone ? '' : 'none';
+
+    const address  = document.getElementById('address').value.trim();
+    const city     = document.getElementById('city').value.trim();
+    const state    = document.getElementById('state').value;
+    const zip      = document.getElementById('zip').value.trim();
+    const country  = document.getElementById('country').value;
+    const addrLine = [address, city, state, zip, country].filter(Boolean).join(', ');
+    document.getElementById('conf-address').textContent = addrLine || '';
+    document.getElementById('conf-address').style.display = addrLine ? '' : 'none';
+
+    const amt = getAmount();
+    const freqLabel = currentFreq === 'once' || currentFreq === 'one-time' ? 'One-time gift' : currentFreq === 'monthly' ? 'Monthly recurring' : 'Annual recurring';
+    document.getElementById('conf-amount').textContent = '$' + amt.toLocaleString();
+    document.getElementById('conf-frequency').textContent = freqLabel;
+
+    if (currentPaymentMethod === 'card') {
+      const cardName = document.getElementById('cardName').value.trim();
+      document.getElementById('conf-payment').textContent = `Card — ${cardName}`;
+    } else {
+      document.getElementById('conf-payment').textContent = `Bank Transfer — ${connectedBankName || 'Connected account'}`;
+    }
+
+    const note = document.getElementById('donorNote').value.trim();
+    if (note) {
+      document.getElementById('conf-note').textContent = note;
+      document.getElementById('conf-note-row').style.display = '';
+    } else {
+      document.getElementById('conf-note-row').style.display = 'none';
+    }
+
+    const honoree    = document.getElementById('honoree').value.trim();
+    const giftType   = document.querySelector('input[name="giftType"]:checked');
+    const notifyEmail = document.getElementById('notifyEmail').value.trim();
+    if (honoree) {
+      const typeLabel = giftType && giftType.value === 'memory' ? 'In Memory of' : 'In Honor of';
+      document.getElementById('conf-dedication').textContent = `${typeLabel} ${honoree}`;
+      document.getElementById('conf-dedication-notify').textContent = notifyEmail ? `Acknowledgment to: ${notifyEmail}` : '';
+      document.getElementById('conf-dedication-row').style.display = '';
+    } else {
+      document.getElementById('conf-dedication-row').style.display = 'none';
+    }
+
+    // Hide form, show confirmation
+    document.getElementById('confirmErrorMsg').style.display = 'none';
+    document.querySelector('.page-container').style.display = 'none';
+    document.getElementById('confirmationScreen').style.display = '';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function backToForm() {
+    document.getElementById('confirmationScreen').style.display = 'none';
+    document.querySelector('.page-container').style.display = '';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  async function submitDonation() {
+    const errEl = document.getElementById('confirmErrorMsg');
+    errEl.style.display = 'none';
+
+    const confirmBtn = document.getElementById('confirmSubmitLabel').parentElement;
+    confirmBtn.disabled = true;
+    document.getElementById('confirmSubmitLabel').textContent = 'Processing…';
+
+    const email = document.getElementById('email').value.trim();
+
+    const basePayload = {
+      firstName:   document.getElementById('firstName').value.trim(),
+      lastName:    document.getElementById('lastName').value.trim(),
+      email:       email,
+      phone:       document.getElementById('phone').value.trim(),
+      address:     document.getElementById('address').value.trim(),
+      city:        document.getElementById('city').value.trim(),
+      state:       document.getElementById('state').value,
+      zip:         document.getElementById('zip').value.trim(),
+      country:     document.getElementById('country').value,
+      amount:      getAmount(),
+      frequency:   currentFreq,
+      note:        document.getElementById('donorNote').value.trim(),
+      honoree:     document.getElementById('honoree').value.trim(),
+      giftType:    document.querySelector('input[name="giftType"]:checked') ? document.querySelector('input[name="giftType"]:checked').value : '',
+      notifyEmail: document.getElementById('notifyEmail').value.trim()
+    };
+
+    try {
+      let payload;
+
+      if (currentPaymentMethod === 'card') {
+
+        if (currentFreq === 'once') {
+          // ── ONE-TIME CARD: PaymentIntent flow ──
+          // Step 1: Create PaymentIntent on server
+          const piRes = await fetch(WORKER_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ ...basePayload, action: 'create_payment_intent', paymentMethod: 'card' })
+          });
+          const piData = await piRes.json();
+          if (piData.error) throw new Error(piData.error);
+
+          // Step 2: Confirm PaymentIntent client-side (handles 3D Secure automatically)
+          const { paymentIntent, error } = await stripe.confirmCardPayment(piData.clientSecret, {
+            payment_method: {
+              card: cardElement,
+              billing_details: {
+                name: document.getElementById('cardName').value.trim(),
+                email: email
+              }
+            }
+          });
+
+          if (error) {
+            errEl.innerHTML = '• ' + error.message;
+            errEl.style.display = 'block';
+            confirmBtn.disabled = false;
+            document.getElementById('confirmSubmitLabel').textContent = 'Confirm & Give';
+            return;
+          }
+
+          // Step 3: Notify server to log to sheet and send emails
+          payload = { ...basePayload, paymentIntentId: paymentIntent.id, paymentMethod: 'card' };
+
+        } else {
+          // ── RECURRING CARD: SetupIntent flow ──
+          // Step 1: Create SetupIntent on server
+          const siRes = await fetch(WORKER_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ ...basePayload, action: 'create_setup_intent', paymentMethod: 'card' })
+          });
+          const siData = await siRes.json();
+          if (siData.error) throw new Error(siData.error);
+
+          // Step 2: Confirm SetupIntent client-side (handles 3D Secure automatically)
+          const { setupIntent, error } = await stripe.confirmCardSetup(siData.clientSecret, {
+            payment_method: {
+              card: cardElement,
+              billing_details: {
+                name: document.getElementById('cardName').value.trim(),
+                email: email
+              }
+            }
+          });
+
+          if (error) {
+            errEl.innerHTML = '• ' + error.message;
+            errEl.style.display = 'block';
+            confirmBtn.disabled = false;
+            document.getElementById('confirmSubmitLabel').textContent = 'Confirm & Give';
+            return;
+          }
+
+          // Step 3: Create subscription with confirmed payment method
+          payload = { ...basePayload, setupIntentId: setupIntent.id, paymentMethodId: setupIntent.payment_method, customerId: siData.customerId, paymentMethod: 'card' };
+        }
+
+      } else {
+        payload = { ...basePayload, bankAccountId: connectedBankAccountId, customerId: connectedCustomerId, paymentMethod: 'bank' };
+      }
+
+      const res = await fetch(WORKER_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+
+      const result = await res.json();
+
+      if (result.error) {
+        errEl.innerHTML = '• ' + result.error;
+        errEl.style.display = 'block';
+        confirmBtn.disabled = false;
+        document.getElementById('confirmSubmitLabel').textContent = 'Confirm & Give';
+      } else {
+        showSuccess();
+      }
+    } catch (err) {
+      errEl.innerHTML = '• Something went wrong. Please try again.';
+      errEl.style.display = 'block';
+      confirmBtn.disabled = false;
+      document.getElementById('confirmSubmitLabel').textContent = 'Confirm & Give';
+    }
+  }
+
+  function showSuccess() {
+    document.getElementById('confirmationScreen').style.display = 'none';
+    const container = document.querySelector('.page-container');
+    // Hide all children except the success banner
+    Array.from(container.children).forEach(el => {
+      if (el.id !== 'successBanner') el.style.display = 'none';
+    });
+    container.style.display = '';
+    const banner = document.getElementById('successBanner');
+    banner.classList.add('visible');
+    banner.style.display = 'block';
+    // Show subscription management note for recurring donations
+    if (currentFreq !== 'once') {
+      document.getElementById('subscriptionNote').style.display = 'block';
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    loadProgress();
+  }
+</script>
+</body>
+</html>
