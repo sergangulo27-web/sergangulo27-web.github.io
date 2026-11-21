@@ -9,18 +9,18 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --navy: #1a2744;
-  --navy-mid: #243354;
-  --gold: #c8973a;
-  --gold-light: #e8b95a;
-  --cream: #faf7f2;
-  --warm-white: #fffdf9;
+  --navy: #1a1a1a;
+  --navy-mid: #2b2b2b;
+  --gold: #c19a6d;
+  --gold-light: #d4b899;
+  --cream: #f5f5f5;
+  --warm-white: #ffffff;
   --text-dark: #1c1c1c;
   --text-mid: #4a4a4a;
   --text-muted: #7a7a7a;
-  --border: #e2d9cc;
+  --border: #e3ddd4;
   --radius: 6px;
-  --shadow: 0 2px 16px rgba(26,39,68,0.10);
+  --shadow: 0 2px 16px rgba(26,26,26,0.10);
 }
 
 html { font-family: 'Lato', sans-serif; background: var(--cream); color: var(--text-dark); font-size: 16px; }
@@ -43,7 +43,7 @@ header {
   width: 40px; height: 40px; border-radius: 50%;
   border: 2px solid var(--gold);
   display: flex; align-items: center; justify-content: center;
-  background: rgba(200,151,58,0.15);
+  background: rgba(193,154,109,0.15);
   overflow: hidden; padding: 0;
 }
 .logo-icon img { width: 100%; height: 100%; object-fit: cover; object-position: center 15%; }
@@ -105,7 +105,7 @@ nav a:hover, nav a.active { color: var(--gold-light); }
 .mobile-nav a:last-child { border-bottom: none; }
 .mobile-nav a:hover, .mobile-nav a.active {
   color: var(--gold-light);
-  background: rgba(200,151,58,0.08);
+  background: rgba(193,154,109,0.08);
 }
 
 /* ── HOME HERO ── */
@@ -144,19 +144,6 @@ nav a:hover, nav a.active { color: var(--gold-light); }
   box-shadow: 0 6px 30px rgba(0,0,0,0.35);
 }
 .hero-photo img { width: 100%; height: 100%; object-fit: cover; object-position: center 15%; }
-.profile-badge {
-  position: absolute;
-  top: -8px; right: -10px;
-  background: var(--gold);
-  color: var(--navy);
-  font-size: 0.62rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  padding: 4px 10px;
-  border-radius: 20px;
-  white-space: nowrap;
-}
 .hero-text { color: #fff; }
 .hero-eyebrow {
   font-size: 0.68rem; letter-spacing: 0.22em; text-transform: uppercase;
@@ -201,7 +188,7 @@ nav a:hover, nav a.active { color: var(--gold-light); }
 /* ── QUICK FACTS STRIP ── */
 .facts-strip {
   background: rgba(0,0,0,0.22);
-  border-top: 1px solid rgba(200,151,58,0.2);
+  border-top: 1px solid rgba(193,154,109,0.2);
   padding: 1rem 2rem;
 }
 .facts-inner {
@@ -237,38 +224,114 @@ nav a:hover, nav a.active { color: var(--gold-light); }
 }
 .card-subtitle { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.5rem; line-height: 1.6; }
 
-/* ── STORY TEASER WITH PHOTO ── */
-.teaser-body { overflow: hidden; }
-.teaser-photo {
-  float: left;
-  width: 190px; height: 220px;
+/* ── NEWSLETTERS (Instagram-style grid) ── */
+.nl-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 4px;
+  border-radius: 8px;
+  overflow: hidden;
+}
+.nl-tile {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  background: var(--navy);
+  border: none; padding: 0; margin: 0;
+  cursor: pointer;
+  overflow: hidden;
+  display: block; width: 100%;
+  font: inherit; color: inherit;
+}
+.nl-tile img {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover; object-position: top center;
+  background: #fff;
+  transition: transform 0.35s ease;
+}
+.nl-tile:hover img { transform: scale(1.04); }
+.nl-placeholder {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  border-bottom: 3px solid var(--gold);
+  color: #fff; text-align: center; padding: 0.5rem;
+}
+.nl-placeholder .m { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold-light); }
+.nl-placeholder .y { font-family: 'Playfair Display', serif; font-size: 1.35rem; margin-top: 2px; }
+.nl-overlay {
+  position: absolute; inset: 0;
+  background: rgba(26,26,26,0.72);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 4px; padding: 0.75rem; text-align: center;
+  opacity: 0; transition: opacity 0.2s;
+}
+.nl-tile:hover .nl-overlay, .nl-tile:focus-visible .nl-overlay { opacity: 1; }
+.nl-tile:focus-visible { outline: 3px solid var(--gold); outline-offset: -3px; }
+.nl-overlay .t { font-family: 'Playfair Display', serif; color: #fff; font-size: 0.98rem; line-height: 1.3; }
+.nl-overlay .d { font-size: 0.72rem; color: var(--gold-light); font-weight: 700; }
+.nl-new {
+  position: absolute; top: 8px; left: 8px; z-index: 1;
+  background: var(--gold); color: var(--navy);
+  font-size: 0.6rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+  padding: 3px 8px; border-radius: 20px;
+}
+.nl-soon {
+  aspect-ratio: 1 / 1;
+  background: var(--cream);
+  border: 1.5px dashed rgba(193,154,109,0.6);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 6px; padding: 0.75rem; text-align: center;
+  min-width: 0; overflow: hidden;
+}
+.nl-soon svg { width: 22px; height: 22px; stroke: var(--gold); fill: none; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; margin-bottom: 2px; }
+.nl-soon .m { font-size: 0.66rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); }
+.nl-soon .t { font-family: 'Playfair Display', serif; font-size: 0.95rem; color: var(--navy); line-height: 1.3; }
+.nl-empty {
+  padding: 1.25rem 1.4rem;
+  border: 1px dashed var(--border);
+  border-radius: 8px;
+  font-size: 0.9rem; color: var(--text-mid); line-height: 1.6;
+}
+.nl-empty a { color: var(--navy); font-weight: 700; }
+
+/* ── NEWSLETTER VIEWER (modal) ── */
+.nl-modal {
+  position: fixed; inset: 0; z-index: 300;
+  background: rgba(0,0,0,0.82);
+  display: none; align-items: center; justify-content: center;
+  padding: 1.5rem;
+}
+.nl-modal.open { display: flex; }
+.nl-modal-box {
+  background: var(--warm-white);
   border-radius: 10px; overflow: hidden;
-  border: 2px solid var(--border);
-  margin: 0 1.75rem 1rem 0;
+  width: 100%; max-width: 760px; max-height: 90vh;
+  display: grid; grid-template-columns: 1.15fr 1fr;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.4);
 }
-.teaser-photo img { width: 100%; height: 100%; object-fit: cover; object-position: center 10%; }
-.about-body { font-size: 0.95rem; color: var(--text-mid); line-height: 1.85; }
-.about-body p { margin-bottom: 1rem; }
-.about-body p:last-child { margin-bottom: 0; }
-.pull-quote {
-  border-left: 3px solid var(--gold);
-  padding: 0.6rem 1.1rem;
-  margin: 1.25rem 0;
-  font-family: 'Playfair Display', serif;
-  font-style: italic;
-  font-size: 1.05rem;
-  color: var(--navy);
-  line-height: 1.6;
-  background: rgba(200,151,58,0.04);
-  border-radius: 0 6px 6px 0;
+.nl-modal-cover { background: var(--navy); position: relative; min-height: 320px; }
+.nl-modal-cover img { width: 100%; height: 100%; object-fit: contain; object-position: top center; display: block; background: #fff; }
+.nl-modal-cover .nl-placeholder { border-bottom: none; }
+.nl-modal-info { padding: 2rem 1.75rem; display: flex; flex-direction: column; overflow-y: auto; }
+.nl-modal-date { font-size: 0.75rem; font-weight: 700; color: var(--gold); margin-bottom: 4px; }
+.nl-modal-info h3 { font-family: 'Playfair Display', serif; font-size: 1.35rem; font-weight: 600; color: var(--navy); line-height: 1.3; }
+.nl-modal-info p { font-size: 0.9rem; color: var(--text-mid); line-height: 1.7; margin-top: 0.75rem; }
+.nl-modal-actions { margin-top: auto; padding-top: 1.5rem; display: flex; flex-direction: column; gap: 0.6rem; }
+.nl-modal-actions a { justify-content: center; }
+.nl-btn-quiet {
+  display: inline-flex; align-items: center; justify-content: center;
+  padding: 0.7rem 1.4rem; border: 1.5px solid var(--border); border-radius: var(--radius);
+  font-size: 0.8rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--text-mid); text-decoration: none; transition: border-color 0.2s, color 0.2s;
 }
-.read-more-link {
-  display: inline-flex; align-items: center; gap: 6px;
-  font-size: 0.82rem; font-weight: 700; letter-spacing: 0.05em;
-  color: var(--navy); text-decoration: none; margin-top: 0.5rem;
-  border-bottom: 1.5px solid var(--gold); padding-bottom: 2px;
+.nl-btn-quiet:hover { border-color: var(--gold); color: var(--navy); }
+.nl-close {
+  position: absolute; top: 14px; right: 18px;
+  background: none; border: none; cursor: pointer;
+  color: #fff; font-size: 2rem; line-height: 1; padding: 4px 8px;
 }
-.read-more-link:hover { color: var(--gold); }
+.nl-close:focus-visible { outline: 2px solid var(--gold); border-radius: 4px; }
+@media (prefers-reduced-motion: reduce) { .nl-tile img { transition: none; } .nl-tile:hover img { transform: none; } }
 
 /* ── HUB LINK CARDS ── */
 .hub-grid {
@@ -291,12 +354,25 @@ nav a:hover, nav a.active { color: var(--gold-light); }
 .hub-card:hover { border-color: var(--gold); transform: translateY(-2px); }
 .hub-icon {
   width: 38px; height: 38px; border-radius: 8px;
-  background: rgba(26,39,68,0.06);
+  background: rgba(26,26,26,0.06);
   display: flex; align-items: center; justify-content: center;
 }
 .hub-icon svg { width: 18px; height: 18px; stroke: var(--navy); fill: none; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
 .hub-card h3 { font-family: 'Playfair Display', serif; font-size: 1.02rem; color: var(--navy); font-weight: 600; }
 .hub-card p { font-size: 0.8rem; color: var(--text-muted); line-height: 1.5; }
+
+/* ── STATS ── */
+.stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+.stat-card {
+  background: var(--warm-white);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1.5rem 1.35rem;
+  box-shadow: var(--shadow);
+  display: flex; flex-direction: column; gap: 0.5rem;
+}
+.stat-card h3 { font-family: 'Playfair Display', serif; font-size: 1.02rem; color: var(--navy); font-weight: 600; }
+.stat-num { font-family: 'Playfair Display', serif; font-size: 2.2rem; font-weight: 600; color: var(--gold); line-height: 1.1; }
 
 /* ── QUOTE CARD ── */
 .quote-card {
@@ -311,7 +387,7 @@ nav a:hover, nav a.active { color: var(--gold-light); }
   position: absolute; top: -10px; left: 16px;
   font-family: 'Playfair Display', serif;
   font-size: 7rem; line-height: 1;
-  color: rgba(200,151,58,0.15);
+  color: rgba(193,154,109,0.15);
   pointer-events: none;
 }
 .quote-card blockquote {
@@ -346,9 +422,6 @@ nav a:hover, nav a.active { color: var(--gold-light); }
 .cta-box-text p { font-size: 0.85rem; color: rgba(255,255,255,0.6); line-height: 1.5; }
 
 /* ── FOOTER ── */
-footer { background: var(--navy); color: rgba(255,255,255,0.5); text-align: center; padding: 1.5rem; font-size: 0.78rem; }
-footer a { color: var(--gold-light); text-decoration: none; }
-footer .footer-name { color: rgba(255,255,255,0.8); font-family: 'Playfair Display', serif; font-size: 0.95rem; margin-bottom: 4px; }
 
 /* ── RESPONSIVE ── */
 @media (max-width: 620px) {
@@ -358,13 +431,27 @@ footer .footer-name { color: rgba(255,255,255,0.8); font-family: 'Playfair Displ
   .hero-text p { max-width: 100%; }
   .hero-actions { justify-content: center; }
   .facts-inner { justify-content: center; text-align: center; }
-  .teaser-photo { float: none; width: 100%; height: 220px; margin: 0 0 1.25rem 0; }
   .hub-grid { grid-template-columns: 1fr; }
+  .stats-grid { grid-template-columns: 1fr; }
   nav { display: none !important; }
   .hamburger { display: flex; }
   .card { padding: 1.5rem 1.25rem; }
   .cta-box { flex-direction: column; text-align: center; }
+  .nl-grid { gap: 3px; }
+  .nl-overlay .t { font-size: 0.78rem; }
+  .nl-overlay .d { display: none; }
+  .nl-placeholder .y { font-size: 1rem; }
+  .nl-soon { gap: 3px; padding: 0.4rem; }
+  .nl-soon .t { font-size: 0.72rem; }
+  .nl-soon .m { font-size: 0.55rem; letter-spacing: 0.08em; }
+  .nl-soon svg { display: none; }
+  .nl-modal { padding: 0.75rem; }
+  .nl-modal-box { grid-template-columns: 1fr; max-height: 92vh; overflow-y: auto; }
+  .nl-modal-cover { min-height: 0; aspect-ratio: 4 / 5; }
+  .nl-modal-info { padding: 1.4rem 1.25rem; overflow: visible; }
 }
+footer { background: var(--navy); text-align: center; padding: 1.5rem; }
+footer .footer-name { color: rgba(255,255,255,0.8); font-family: 'Playfair Display', serif; font-size: 0.95rem; }
 </style>
 </head>
 <body>
@@ -400,7 +487,6 @@ footer .footer-name { color: rgba(255,255,255,0.8); font-family: 'Playfair Displ
 <div class="home-hero">
   <div class="hero-inner">
     <div class="hero-photo-wrap">
-      <div class="profile-badge">In Training</div>
       <div class="hero-photo">
         <img src="images/Sergio_Angulo_copy.jpeg" alt="Sergio Angulo">
       </div>
@@ -422,30 +508,37 @@ footer .footer-name { color: rgba(255,255,255,0.8); font-family: 'Playfair Displ
 <!-- PAGE CONTENT -->
 <div class="page-container">
 
-  <!-- STORY TEASER -->
-  <div class="card">
-    <div class="teaser-body">
-      <div class="teaser-photo">
-        <img src="images/GOPR6935.webp" alt="Sergio Angulo">
-      </div>
-      <p class="card-title">From Engineering to the Streets</p>
-      <div class="about-body">
-        <p>Six months ago, Christ in the City wasn't on my radar. I was an engineer with a good job, a Northeastern MBA underway, and a plan I'd been working toward for years. Then a mission trip to serve the homeless in Denver changed everything I thought I wanted.</p>
-        <div class="pull-quote">"I arrived expecting to serve, but it quickly became clear that I was the one receiving a gift."</div>
-        <p>This year, I'm trading that plan for a year of full-time mission — learning what it means to love the poor not as a project, but as friends.</p>
-      </div>
-      <a href="story.html" class="read-more-link">
-        Read my full story
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
-      </a>
-    </div>
-  </div>
-
   <!-- QUOTE -->
   <div class="quote-card">
     <blockquote>"If I therefore, the master and teacher, have washed your feet, you ought to wash one another's feet. I have given you a model to follow, so that as I have done for you, you should also do."</blockquote>
     <div class="quote-attribution">— John 13:14-15</div>
   </div>
+
+  <!-- STATS — replace each — with the number -->
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="hub-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div>
+      <h3>Time on the Streets</h3>
+      <div class="stat-num">—</div>
+    </div>
+    <div class="stat-card">
+      <div class="hub-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg></div>
+      <h3>Friends Encountered</h3>
+      <div class="stat-num">—</div>
+    </div>
+    <div class="stat-card">
+      <div class="hub-icon"><svg viewBox="0 0 24 24"><path d="M12 2v20M7 7h10"/></svg></div>
+      <h3>Answered Prayers</h3>
+      <div class="stat-num">—</div>
+    </div>
+  </div>
+
+  <!-- NEWSLETTERS -->
+  <section class="card" id="newsletters" aria-labelledby="nlHeading">
+    <h2 class="card-title" id="nlHeading">Newsletters</h2>
+    <p class="card-subtitle">Updates from the streets of Denver — stories, prayer intentions, and what God is doing this year.</p>
+    <div id="nlContent"></div>
+  </section>
 
   <!-- HUB CARDS -->
   <div class="hub-grid">
@@ -486,13 +579,185 @@ footer .footer-name { color: rgba(255,255,255,0.8); font-family: 'Playfair Displ
 
 </div>
 
+<!-- NEWSLETTER VIEWER -->
+<div class="nl-modal" id="nlModal" role="dialog" aria-modal="true" aria-labelledby="nlModalTitle">
+  <button class="nl-close" id="nlModalClose" type="button" aria-label="Close">&times;</button>
+  <div class="nl-modal-box">
+    <div class="nl-modal-cover" id="nlModalCover"></div>
+    <div class="nl-modal-info">
+      <div class="nl-modal-date" id="nlModalDate"></div>
+      <h3 id="nlModalTitle"></h3>
+      <p id="nlModalSummary"></p>
+      <div class="nl-modal-actions">
+        <a class="btn-gold" id="nlModalRead" href="#" target="_blank" rel="noopener">Read newsletter</a>
+        <a class="nl-btn-quiet" id="nlModalDownload" href="#" download>Download PDF</a>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- FOOTER -->
 <footer>
   <div class="footer-name">Sergio Angulo · Christ in the City</div>
-  <p><a href="support.html">Support Sergio</a> · <a href="mailto:sergio28@christinthecity.org">sergio28@christinthecity.org</a></p>
 </footer>
 
 <script>
+  // ════════════════════════════════════════════════════════════════
+  //  NEWSLETTERS — the only part you need to edit to add an issue.
+  //
+  //  1. Put the PDF in the  newsletters/  folder (next to index.html).
+  //  2. Add one line below. Order doesn't matter — newest shows first.
+  //
+  //     date:    'YYYY-MM'  (the month the newsletter covers)
+  //     title:   the headline readers will see
+  //     file:    path to the PDF
+  //     summary: optional short description, shown when the tile is opened
+  //     cover:   optional image for the tile (e.g. 'newsletters/2026-11.jpg').
+  //              If left out, the first page of the PDF is used automatically.
+  // ════════════════════════════════════════════════════════════════
+  const NEWSLETTERS = [
+    { date: '2026-11', title: 'Fall Newsletter Part 1: Broad Strokes', file: 'newsletters/2026-11-fall-part-1.pdf', cover: 'newsletters/2026-11-fall-part-1.jpg', summary: 'The first 15 weeks in Denver: orientation, a silent retreat, walking the Parks route, Lunch in the Park, and befriending residents at City Park nursing home.' },
+    // { date: '2026-11', title: 'First Weeks on the Streets', file: 'newsletters/2026-11.pdf', summary: 'Settling into community life and meeting our friends downtown.' },
+    // { date: '2026-10', title: 'Training Begins',            file: 'newsletters/2026-10.pdf' },
+  ];
+
+  //  UPCOMING — placeholder tiles for issues that aren't out yet.
+  //  When one is published, delete its line here and add it to NEWSLETTERS above.
+  //  Extra "Coming soon" tiles are added automatically to fill out the last row.
+  const UPCOMING = [
+    { title: 'Fall Newsletter Part 2' },
+    { title: 'Winter Newsletter' },
+  ];
+
+  // ── NEWSLETTER GALLERY (no need to edit below) ──
+  (function newsletterGallery() {
+    const root = document.getElementById('nlContent');
+    const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+    const fmt = d => {
+      const [y, m] = String(d).split('-').map(Number);
+      const month = MONTHS[m - 1] || '';
+      return { month, short: month.slice(0, 3), year: y || '', label: (month + ' ' + (y || '')).trim() };
+    };
+    const el = (tag, cls, text) => {
+      const n = document.createElement(tag);
+      if (cls) n.className = cls;
+      if (text != null) n.textContent = text;
+      return n;
+    };
+    const placeholder = d => {
+      const p = el('div', 'nl-placeholder');
+      p.append(el('span', 'm', d.short), el('span', 'y', d.year));
+      return p;
+    };
+
+    const issues = NEWSLETTERS
+      .filter(n => n && n.file && n.date)
+      .sort((a, b) => String(b.date).localeCompare(String(a.date)));
+
+    if (!issues.length) {
+      const empty = el('div', 'nl-empty');
+      empty.innerHTML = 'The first newsletter is on its way. <a href="contact.html">Send me a message</a> if you\'d like it emailed to you.';
+      root.appendChild(empty);
+      return;
+    }
+
+    // ── PDF first-page thumbnails (PDF.js, loaded only if needed) ──
+    let pdfjsReady = null;
+    const loadPdfJs = () => pdfjsReady || (pdfjsReady = new Promise((resolve, reject) => {
+      const s = document.createElement('script');
+      s.src = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';
+      s.onload = () => {
+        window.pdfjsLib.GlobalWorkerOptions.workerSrc =
+          'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+        resolve(window.pdfjsLib);
+      };
+      s.onerror = reject;
+      document.head.appendChild(s);
+    }));
+    const thumbCache = {};
+    const pdfThumb = file => thumbCache[file] || (thumbCache[file] = loadPdfJs()
+      .then(lib => lib.getDocument(file).promise)
+      .then(pdf => pdf.getPage(1))
+      .then(page => {
+        const base = page.getViewport({ scale: 1 });
+        const viewport = page.getViewport({ scale: 900 / base.width });
+        const canvas = document.createElement('canvas');
+        canvas.width = viewport.width; canvas.height = viewport.height;
+        return page.render({ canvasContext: canvas.getContext('2d'), viewport }).promise
+          .then(() => canvas.toDataURL('image/jpeg', 0.85));
+      }));
+    const coverFor = n => n.cover ? Promise.resolve(n.cover) : pdfThumb(n.file);
+
+    // Fills a container with the cover image, keeping the placeholder if it fails
+    const fillCover = (container, n, d) => {
+      container.appendChild(placeholder(d));
+      coverFor(n).then(src => {
+        const img = new Image();
+        img.alt = '';
+        img.onload = () => { container.querySelector('.nl-placeholder')?.remove(); container.prepend(img); };
+        img.src = src;
+      }).catch(() => {});
+    };
+
+    // ── Grid ──
+    const grid = el('div', 'nl-grid');
+    issues.forEach((n, i) => {
+      const d = fmt(n.date);
+      const tile = el('button', 'nl-tile');
+      tile.type = 'button';
+      tile.setAttribute('aria-label', (n.title || 'Newsletter') + ', ' + d.label);
+      fillCover(tile, n, d);
+      if (i === 0) tile.appendChild(el('span', 'nl-new', 'Latest'));
+      const ov = el('div', 'nl-overlay');
+      ov.append(el('span', 't', n.title || 'Newsletter'), el('span', 'd', d.label));
+      tile.appendChild(ov);
+      tile.addEventListener('click', () => openViewer(n, tile));
+      grid.appendChild(tile);
+    });
+
+    // ── Upcoming placeholders ──
+    const soon = UPCOMING.filter(u => u && u.title).map(u => u.title);
+    while ((issues.length + soon.length) % 3) soon.push('');
+    soon.forEach(title => {
+      const t = el('div', 'nl-soon');
+      t.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>';
+      t.append(el('span', 'm', 'Coming soon'));
+      if (title) t.append(el('span', 't', title));
+      grid.appendChild(t);
+    });
+    root.appendChild(grid);
+
+    // ── Viewer modal ──
+    const modal = document.getElementById('nlModal');
+    const modalCover = document.getElementById('nlModalCover');
+    let lastTile = null;
+
+    function openViewer(n, tile) {
+      const d = fmt(n.date);
+      lastTile = tile;
+      modalCover.innerHTML = '';
+      fillCover(modalCover, n, d);
+      document.getElementById('nlModalDate').textContent = d.label;
+      document.getElementById('nlModalTitle').textContent = n.title || (d.label + ' Newsletter');
+      const sum = document.getElementById('nlModalSummary');
+      sum.textContent = n.summary || '';
+      sum.style.display = n.summary ? '' : 'none';
+      document.getElementById('nlModalRead').href = n.file;
+      document.getElementById('nlModalDownload').href = n.file;
+      modal.classList.add('open');
+      document.body.style.overflow = 'hidden';
+      document.getElementById('nlModalClose').focus();
+    }
+    function closeViewer() {
+      modal.classList.remove('open');
+      document.body.style.overflow = '';
+      if (lastTile) lastTile.focus();
+    }
+    document.getElementById('nlModalClose').addEventListener('click', closeViewer);
+    modal.addEventListener('click', e => { if (e.target === modal) closeViewer(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape' && modal.classList.contains('open')) closeViewer(); });
+  })();
+
   // ── HAMBURGER MENU ──
   function toggleMenu() {
     const btn = document.getElementById('hamburger');
