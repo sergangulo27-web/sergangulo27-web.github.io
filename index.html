@@ -361,6 +361,20 @@ nav a:hover, nav a.active { color: var(--gold-light); }
 .hub-card h3 { font-family: 'Playfair Display', serif; font-size: 1.02rem; color: var(--navy); font-weight: 600; }
 .hub-card p { font-size: 0.8rem; color: var(--text-muted); line-height: 1.5; }
 
+/* ── STATS ── */
+.stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+.stat-card {
+  background: var(--warm-white);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1.5rem 1.35rem;
+  box-shadow: var(--shadow);
+  display: flex; flex-direction: column; gap: 0.5rem;
+}
+.stat-card h3 { font-family: 'Playfair Display', serif; font-size: 1.02rem; color: var(--navy); font-weight: 600; }
+.stat-num { font-family: 'Playfair Display', serif; font-size: 2.2rem; font-weight: 600; color: var(--gold); line-height: 1.1; }
+.stat-label { font-size: 0.8rem; color: var(--text-muted); line-height: 1.5; }
+
 /* ── QUOTE CARD ── */
 .quote-card {
   background: var(--navy);
@@ -419,6 +433,7 @@ nav a:hover, nav a.active { color: var(--gold-light); }
   .hero-actions { justify-content: center; }
   .facts-inner { justify-content: center; text-align: center; }
   .hub-grid { grid-template-columns: 1fr; }
+  .stats-grid { grid-template-columns: 1fr; }
   nav { display: none !important; }
   .hamburger { display: flex; }
   .card { padding: 1.5rem 1.25rem; }
@@ -498,6 +513,28 @@ footer .footer-name { color: rgba(255,255,255,0.8); font-family: 'Playfair Displ
   <div class="quote-card">
     <blockquote>"If I therefore, the master and teacher, have washed your feet, you ought to wash one another's feet. I have given you a model to follow, so that as I have done for you, you should also do."</blockquote>
     <div class="quote-attribution">— John 13:14-15</div>
+  </div>
+
+  <!-- STATS — replace each — with the number, and edit the small line below it -->
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="hub-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div>
+      <h3>Time on the Streets</h3>
+      <div class="stat-num">—</div>
+      <p class="stat-label">hours walking downtown Denver</p>
+    </div>
+    <div class="stat-card">
+      <div class="hub-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg></div>
+      <h3>Friends Encountered</h3>
+      <div class="stat-num">—</div>
+      <p class="stat-label">people we've gotten to know by name</p>
+    </div>
+    <div class="stat-card">
+      <div class="hub-icon"><svg viewBox="0 0 24 24"><path d="M12 2v20M7 7h10"/></svg></div>
+      <h3>Answered Prayers</h3>
+      <div class="stat-num">—</div>
+      <p class="stat-label">prayers we've seen answered</p>
+    </div>
   </div>
 
   <!-- NEWSLETTERS -->
